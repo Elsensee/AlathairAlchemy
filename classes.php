@@ -133,6 +133,11 @@ class Regency
 		}
 	}
 
+	public function __toString()
+	{
+		return $this->getName();
+	}
+
 	static public function setEffectCollection(EffectCollection $collection)
 	{
 		self::$collection = $collection;
@@ -281,63 +286,117 @@ class RegencyBuilder
 		{
 			$regenciesFromEffects = array_merge($regenciesFromEffects, RegencyCollection::getRegenciesWithEffect($effectWished));
 		}
-		$regenciesFromEffects = array_values(array_unique($regenciesFromEffects, SORT_REGULAR));
+		$regenciesFromEffects = array_unique($regenciesFromEffects);
+		sort($regenciesFromEffects, SORT_STRING);
+		$regenciesFromEffects = array_values($regenciesFromEffects);
 
-		$result = [];
+		$checked = $pairs = [];
 
-		for ($i = 0, $size = count($regenciesFromEffects); $i < $size; $i++)
-		{
-			for ($j = $i + 1; $j < $size; $j++)
-			{
-				$temp = $this->getEffectsFromRegencies([$regenciesFromEffects[$i], $regenciesFromEffects[$j]]);
-				if ($temp === null)
-				{
-					continue;
-				}
-				$result[] = $temp;
-			}
-		}
-
-		return $this->filter($result);
-	}
-
-	protected function filter($regencyPairs)
-	{
 		$effects = array_map(function($effect) {
 			/** @var Effect $effect */
 			return $effect->getName();
 		}, $this->effectsWished);
+		$countEffects = count($effects);
 
-		$exact = $this->exactEffects;
-		$filterNegative = $this->filterNegative;
+		for ($combineCount = 2; $combineCount <= 4; $combineCount++)
+		{
+			$combinations = $this->combine($regenciesFromEffects, $combineCount);
 
-		return array_filter($regencyPairs, function($regencyPair) use ($effects, $exact, $filterNegative) {
-			if ($filterNegative)
+			foreach ($combinations as $combination)
 			{
-				foreach ($regencyPair[1] as $effect)
+				$step = 0;
+				$temp_check = &$checked;
+
+				do
 				{
-					if (!EffectCollection::getEffect($effect)->isPositive() && !in_array($effect, $effects))
+					if (!isset($temp_check[$combination[$step]->getId()]))
 					{
-						return false;
+						$temp_check[$combination[$step]->getId()] = [];
+					}
+					else if ($temp_check[$combination[$step]->getId()] === true)
+					{
+						continue 2;
+					}
+
+					$temp_check = &$temp_check[$combination[$step]->getId()];
+					$step++;
+				} while ($step < $combineCount);
+
+				$pair = $this->getEffectsFromRegencies($combination);
+
+				if ($pair === null)
+				{
+					continue;
+				}
+
+				if ($this->filterNegative)
+				{
+					foreach ($pair->getEffects() as $effect)
+					{
+						if (!EffectCollection::getEffect($effect)->isPositive() && !in_array($effect, $effects))
+						{
+							continue 2;
+						}
+					}
+				}
+
+				if (count(array_intersect($pair->getEffects(), $effects)) < $countEffects)
+				{
+					continue;
+				}
+
+				if ($this->exactEffects)
+				{
+					if (count(array_diff($pair->getEffects(), $effects)) > 0)
+					{
+						continue;
+					}
+				}
+
+				$temp_check = true;
+				$pairs[] = $pair;
+			}
+			$pairs[] = null;
+		}
+
+		return $pairs;
+	}
+
+	protected function combine($regencies, $size)
+	{
+		$count = count($regencies);
+
+		$result = [];
+
+		foreach ($regencies as $key => $regency)
+		{
+			for ($i = $key + 1; $i < $count; $i++)
+			{
+				if ($size <= 2)
+				{
+					$result[] = [$regency, $regencies[$i]];
+				}
+				else
+				{
+					for ($j = $i + 1; $j < $count; $j++)
+					{
+						if ($size <= 3)
+						{
+							$result[] = [$regency, $regencies[$i], $regencies[$j]];
+						}
+						else
+						{
+							for ($k = $j + 1; $k < $count; $k++)
+							{
+								$result[] = [$regency, $regencies[$i], $regencies[$j], $regencies[$k]];
+							}
+						}
 					}
 				}
 			}
+		}
 
-			if (count(array_intersect($regencyPair[1], $effects)) < count($effects))
-			{
-				return false;
-			}
-
-			if ($exact)
-			{
-				if (count(array_diff($regencyPair[1], $effects)) > 0)
-				{
-					return false;
-				}
-			}
-
-			return true;
-		});
+		return $result;
 	}
 
 	protected function getEffectsFromRegencies($regencies)
@@ -381,6 +440,29 @@ class RegencyBuilder
 			return null;
 		}
 
-		return [array_unique($regencyResult), array_unique($effectResult)];
+		return new PairResult(array_unique($regencyResult), array_unique($effectResult));
+	}
+}
+
+class PairResult
+{
+	protected $effects;
+
+	protected $regencies;
+
+	public function __construct(array $regencies, array $effects)
+	{
+		$this->regencies = $regencies;
+		$this->effects = $effects;
+	}
+
+	public function getEffects()
+	{
+		return $this->effects;
+	}
+
+	public function getRegencies()
+	{
+		return $this->regencies;
 	}
 }

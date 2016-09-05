@@ -4,7 +4,19 @@ error_reporting(E_ALL);
 
 require('./classes.php');
 require('./data.php');
-require('./functions.php');
+
+function getEffectsAsOptions($selected)
+{
+	$result = '<option value="-1"></option>';
+
+	/** @var Effect $value */
+	foreach (EffectCollection::getAllEffects() as $key => $value)
+	{
+		$result .= '<option value="' . $key . '"' . ($selected === $key ? ' selected' : '') . '>' . $value->getName() . '</option>';
+	}
+
+	return $result;
+}
 
 $effect1 = (int) (isset($_POST['effect1']) ? $_POST['effect1'] : -1);
 $effect2 = (int) (isset($_POST['effect2']) ? $_POST['effect2'] : -1);
@@ -30,43 +42,45 @@ $builder->setEffect($effect1)
 	</style>
 </head>
 <body>
-<form action="index.php" method="post">
-	<select name="effect1"><?= getEffectsAsOptions($effect1); ?></select>
-	<select name="effect2"><?= getEffectsAsOptions($effect2); ?></select>
-	<select name="effect3"><?= getEffectsAsOptions($effect3); ?></select>
-	<select name="effect4"><?= getEffectsAsOptions($effect4); ?></select>
-	<br /><br />
-	<input type="checkbox" name="filter_negative" value="1" <?php if ($filter_negative) echo 'checked="checked" '; ?>/> Negative filtern?<br />
-	<input type="checkbox" name="exact_effects" value="1" <?php if ($exact_effects) echo 'checked="checked" '; ?>/> Exakt diese Wirkungen?<br />
-	<br />
-	<input type="submit" value="Mix it!" name="submit" />
-</form>
-<?php
+	<form action="index.php" method="post">
+		<select name="effect1"><?= getEffectsAsOptions($effect1); ?></select>
+		<select name="effect2"><?= getEffectsAsOptions($effect2); ?></select>
+		<select name="effect3"><?= getEffectsAsOptions($effect3); ?></select>
+		<select name="effect4"><?= getEffectsAsOptions($effect4); ?></select>
+		<br /><br />
+		<input type="checkbox" name="filter_negative" value="1" <?php if ($filter_negative) echo 'checked="checked" '; ?>/> Negative filtern?<br />
+		<input type="checkbox" name="exact_effects" value="1" <?php if ($exact_effects) echo 'checked="checked" '; ?>/> Exakt diese Wirkungen?<br />
+		<br />
+		<input type="submit" value="Mix it!" name="submit" />
+	</form><?php
 
 if (isset($_POST['submit']))
 {
 	?>
-<table>
-	<tr>
-		<th>Reagenzien</th>
-		<th>Wirkungen</th>
-	</tr>
-<?php
+	<table>
+		<tr>
+			<th>Reagenzien</th>
+			<th>Wirkungen</th>
+		</tr><?php
 
-	$effect_regencies = $builder->getResult();
-	foreach ($effect_regencies as $entry)
+	$regency_pairs = $builder->getResult();
+	foreach ($regency_pairs as $regency_pair)
 	{
+		if ($regency_pair === null)
+		{
+			echo '<tr></tr>' . PHP_EOL;
+			continue;
+		}
 		?>
-	<tr>
-		<td><?= implode(', ', $entry[0]); ?></td>
-		<td><?= implode(', ', $entry[1]); ?></td>
-	</tr>
+		<tr>
+			<td><?= implode(', ', $regency_pair->getRegencies()); ?></td>
+			<td><?= implode(', ', $regency_pair->getEffects()); ?></td>
+		</tr>
 <?php
 	}
 
 ?>
-</table>
-	<?php
+	</table><?php
 }
 ?>
 </body>
