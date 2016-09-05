@@ -14,6 +14,11 @@ class Effect
 		$this->isPositive = $isPositive;
 	}
 
+	public function __toString()
+	{
+		return $this->getName();
+	}
+
 	public function getName()
 	{
 		return $this->name;
@@ -114,16 +119,16 @@ class Regency
 
 	protected $name;
 
-	protected $value;
+	protected $price;
 
-	public function __construct($name, array $effects, $value = null)
+	public function __construct($name, array $effects, $price = null)
 	{
 		if (self::$collection === null)
 		{
 			throw new Exception();
 		}
 		$this->name = $name;
-		$this->value = $value;
+		$this->price = $price;
 
 		$this->effects = [];
 
@@ -153,9 +158,14 @@ class Regency
 		return $this->effects;
 	}
 
-	public function getValue()
+	public function getPrice()
 	{
-		return $this->value;
+		return $this->price;
+	}
+
+	public function setPrice($price)
+	{
+		$this->price = $price;
 	}
 
 	public function setId($id)
@@ -180,6 +190,11 @@ class RegencyCollection
 		$id = count(self::$regencies);
 		$regency->setId($id);
 		self::$regencies[] = $regency;
+	}
+
+	static public function getAllRegencies()
+	{
+		return self::$regencies;
 	}
 
 	static public function getRegency($name)
@@ -228,6 +243,35 @@ class RegencyCollection
 
 		return null;
 	}
+
+	static public function setPrices($text)
+	{
+		if (empty($text))
+		{
+			return;
+		}
+
+		$prices = explode(',', $text);
+
+		/** @var Regency $regency */
+		for ($i = 0, $size = count(self::$regencies); $i < $size; $i++)
+		{
+			self::$regencies[$i]->setPrice(intval($prices[$i]));
+		}
+	}
+
+	static public function getPrices()
+	{
+		$prices = [];
+
+		/** @var Regency $regency */
+		foreach (self::$regencies as $regency)
+		{
+			$prices[] = intval($regency->getPrice());
+		}
+
+		return implode(',', $prices);
+	}
 }
 
 class RegencyBuilder
@@ -237,6 +281,8 @@ class RegencyBuilder
 	protected $exactEffects = false;
 
 	protected $filterNegative = false;
+
+	protected $priceSort = false;
 
 	protected $result = [];
 
@@ -258,6 +304,10 @@ class RegencyBuilder
 		{
 			throw new RuntimeException('Effect with ID ' . $effectId . ' could not be found.');
 		}
+		else if (in_array($effect, $this->effectsWished))
+		{
+			return $this;
+		}
 
 		$this->effectsWished[] = $effect;
 
@@ -274,6 +324,13 @@ class RegencyBuilder
 	public function setFilterNegative($filter)
 	{
 		$this->filterNegative = $filter;
+
+		return $this;
+	}
+
+	public function setPriceSort($sort)
+	{
+		$this->priceSort = $sort;
 
 		return $this;
 	}
@@ -331,32 +388,50 @@ class RegencyBuilder
 
 				if ($this->filterNegative)
 				{
+					/** @var Effect $effect */
 					foreach ($pair->getEffects() as $effect)
 					{
-						if (!EffectCollection::getEffect($effect)->isPositive() && !in_array($effect, $effects))
+						if (!$effect->isPositive() && !in_array($effect->getName(), $effects))
 						{
 							continue 2;
 						}
 					}
 				}
 
-				if (count(array_intersect($pair->getEffects(), $effects)) < $countEffects)
+				if (count(array_intersect($pair->getEffectNames(), $effects)) < $countEffects)
 				{
 					continue;
 				}
 
 				if ($this->exactEffects)
 				{
-					if (count(array_diff($pair->getEffects(), $effects)) > 0)
+					if (count(array_diff($pair->getEffectNames(), $effects)) > 0)
 					{
 						continue;
 					}
 				}
 
-				$temp_check = true;
 				$pairs[] = $pair;
+				$temp_check = true;
 			}
-			$pairs[] = null;
+			if (!empty($pairs) && !$this->priceSort)
+			{
+				$pairs[] = null;
+			}
+		}
+
+		if ($this->priceSort)
+		{
+			usort($pairs, function (PairResult $a, PairResult $b) {
+				$priceA = $a->getPrice();
+				$priceB = $b->getPrice();
+
+				if ($priceA === $priceB)
+				{
+					return 0;
+				}
+				return ($priceA < $priceB) ? -1 : 1;
+			});
 		}
 
 		return $pairs;
@@ -401,7 +476,7 @@ class RegencyBuilder
 
 	protected function getEffectsFromRegencies($regencies)
 	{
-		$regencies = array_unique($regencies, SORT_REGULAR);
+		$regencies = array_unique($regencies);
 
 		$effectArray = [];
 
@@ -416,7 +491,7 @@ class RegencyBuilder
 					$effectArray[$effect->getName()] = [];
 				}
 
-				$effectArray[$effect->getName()] = array_merge($effectArray[$effect->getName()], [$regency->getName()]);
+				$effectArray[$effect->getName()][] = $regency->getName();
 			}
 		}
 
@@ -426,11 +501,11 @@ class RegencyBuilder
 		{
 			if (count($effectRegencies) >= 2)
 			{
-				$effectResult[] = $effect;
+				$effectResult[] = EffectCollection::getEffect($effect);
 
 				foreach ($effectRegencies as $effectRegency)
 				{
-					$regencyResult[] = $effectRegency;
+					$regencyResult[] = RegencyCollection::getRegency($effectRegency);
 				}
 			}
 		}
@@ -456,9 +531,57 @@ class PairResult
 		$this->effects = $effects;
 	}
 
+	public function getEffectNames()
+	{
+		$result = [];
+
+		foreach ($this->effects as $effect)
+		{
+			$result[] = $effect->getName();
+		}
+
+		return $result;
+	}
+
 	public function getEffects()
 	{
 		return $this->effects;
+	}
+
+	public function getPrice()
+	{
+		$price = 0;
+
+		foreach ($this->regencies as $regency)
+		{
+			$price += $regency->getPrice();
+		}
+
+		return $price;
+	}
+
+	public function getPriceText()
+	{
+		$prices = [];
+
+		foreach ($this->regencies as $regency)
+		{
+			$prices[] = $regency->getPrice();
+		}
+
+		return implode('+', $prices) . '=' . array_sum($prices);
+	}
+
+	public function getRegencyNames()
+	{
+		$result = [];
+
+		foreach ($this->regencies as $regency)
+		{
+			$result[] = $regency->getName();
+		}
+
+		return $result;
 	}
 
 	public function getRegencies()

@@ -5,6 +5,9 @@ error_reporting(E_ALL);
 require('./classes.php');
 require('./data.php');
 
+$prices = @file_get_contents('price_data.txt', FILE_TEXT);
+RegencyCollection::setPrices($prices);
+
 function getEffectsAsOptions($selected)
 {
 	$result = '<option value="-1"></option>';
@@ -24,6 +27,7 @@ $effect3 = (int) (isset($_POST['effect3']) ? $_POST['effect3'] : -1);
 $effect4 = (int) (isset($_POST['effect4']) ? $_POST['effect4'] : -1);
 $filter_negative = isset($_POST['filter_negative']) && $_POST['filter_negative'];
 $exact_effects = isset($_POST['exact_effects']) && $_POST['exact_effects'];
+$sort_prices = isset($_POST['sort_prices']) && $_POST['sort_prices'];
 
 $builder = new RegencyBuilder();
 $builder->setEffect($effect1)
@@ -31,14 +35,25 @@ $builder->setEffect($effect1)
 		->setEffect($effect3)
 		->setEffect($effect4)
 		->setFilterNegative($filter_negative)
-		->setExact($exact_effects);
+		->setExact($exact_effects)
+		->setPriceSort($sort_prices);
+
+if (isset($_POST['submit']))
+{
+	foreach (RegencyCollection::getAllRegencies() as $regency)
+	{
+		$regency->setPrice(intval($_POST['price' . $regency->getId()]));
+	}
+}
+
+file_put_contents('price_data.txt', RegencyCollection::getPrices(), FILE_TEXT);
 
 ?><!DOCTYPE html>
 <html>
 <head>
 	<title>Alathair Alchemie</title>
 	<style>
-		table, td, th { border: 1px solid black; }
+		table, th, td { border: 1px solid black; }
 	</style>
 </head>
 <body>
@@ -50,18 +65,19 @@ $builder->setEffect($effect1)
 		<br /><br />
 		<input type="checkbox" name="filter_negative" value="1" <?php if ($filter_negative) echo 'checked="checked" '; ?>/> Negative filtern?<br />
 		<input type="checkbox" name="exact_effects" value="1" <?php if ($exact_effects) echo 'checked="checked" '; ?>/> Exakt diese Wirkungen?<br />
+		<input type="checkbox" name="sort_prices" value="1" <?php if ($sort_prices) echo 'checked="checked" '; ?>/> Nach Preisen sortieren?<br />
 		<br />
-		<input type="submit" value="Mix it!" name="submit" />
-	</form><?php
+		<input type="submit" value="Mix it!" name="submit" /><?php
 
-if (isset($_POST['submit']))
+if (isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 || $effect4 > -1))
 {
 	?>
-	<table>
-		<tr>
-			<th>Reagenzien</th>
-			<th>Wirkungen</th>
-		</tr><?php
+		<table>
+			<tr>
+				<th>Reagenzien</th>
+				<th>Wirkungen</th>
+				<th>Preis</th>
+			</tr><?php
 
 	$regency_pairs = $builder->getResult();
 	foreach ($regency_pairs as $regency_pair)
@@ -72,16 +88,36 @@ if (isset($_POST['submit']))
 			continue;
 		}
 		?>
-		<tr>
-			<td><?= implode(', ', $regency_pair->getRegencies()); ?></td>
-			<td><?= implode(', ', $regency_pair->getEffects()); ?></td>
-		</tr>
-<?php
+
+			<tr>
+				<td><?= implode(', ', $regency_pair->getRegencyNames()); ?></td>
+				<td><?= implode(', ', $regency_pair->getEffectNames()); ?></td>
+				<td><?= $regency_pair->getPriceText(); ?></td>
+			</tr><?php
 	}
 
 ?>
-	</table><?php
+		</table><?php
 }
 ?>
+		<br /><br /><hr /><br />
+		<table>
+			<tr>
+				<th>Reagenz</th>
+				<th>Preis</th>
+			</tr><?php
+		foreach (RegencyCollection::getAllRegencies() as $regency)
+		{
+			?>
+
+			<tr>
+				<td><?= $regency->getName(); ?></td>
+				<td><input name="price<?= $regency->getId(); ?>" type="number" value="<?= intval($regency->getPrice()); ?>" style="width: 100px;"></td>
+			</tr><?php
+		}
+			?>
+		</table>
+		<input type="submit" value="Preise speichern" name="submit" />
+	</form>
 </body>
 </html>
