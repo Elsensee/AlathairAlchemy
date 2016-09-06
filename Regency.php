@@ -143,7 +143,7 @@ class Regency
 
 	/**
 	 * Sets the Effect Collection statically for the Regency class.
-	 * (Used to determine which Effect instances have to be choosed)
+	 * (Used to determine which Effect instances have to be selected)
 	 *
 	 * @param EffectCollection $collection
 	 */

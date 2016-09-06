@@ -81,7 +81,7 @@ if (isset($_POST['submit']))
 
 		<tr>
 		<td><?= $regency->getName(); ?></td>
-		<td><input name="price<?= $regency->getId(); ?>" type="number" value="<?= $regency->getPrice(); ?>" style="width: 100px;"></td>
+		<td><input name="price<?= $regency->getId(); ?>" type="number" title="Preis eingeben" value="<?= $regency->getPrice(); ?>" style="width: 100px;"></td>
 		</tr><?php
 	}
 	?>
