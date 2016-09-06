@@ -20,32 +20,32 @@
 * THE SOFTWARE.
 */
 
+$startime = microtime(true);
+
 error_reporting(E_ALL);
 
 require('./Effect.php');
 require('./EffectCollection.php');
 require('./Regency.php');
 require('./RegencyCollection.php');
-require('./RegencyBuilder.php');
 require('./PairResult.php');
-require('./data.php');
-
-$prices = @file_get_contents('price_data.txt', FILE_TEXT);
-RegencyCollection::setPrices($prices);
+require('./PairBuilder.php');
 
 function getEffectsAsOptions($selected)
 {
 	$result = '<option value="-1"></option>';
 
 	/** @var Effect $value */
-	foreach (EffectCollection::getAllEffects() as $key => $value)
-	{
+	foreach (EffectCollection::getAllEffects() as $key => $value) {
 		$result .= '<option value="' . $key . '"' . ($selected === $key ? ' selected' : '') . '>' . $value->getName() . '</option>';
 	}
 
 	return $result;
 }
 
+require('./data.php');
+
+// Get variables
 $effect1 = (int) (isset($_POST['effect1']) ? $_POST['effect1'] : -1);
 $effect2 = (int) (isset($_POST['effect2']) ? $_POST['effect2'] : -1);
 $effect3 = (int) (isset($_POST['effect3']) ? $_POST['effect3'] : -1);
@@ -54,7 +54,8 @@ $filter_negative = isset($_POST['filter_negative']) && $_POST['filter_negative']
 $exact_effects = isset($_POST['exact_effects']) && $_POST['exact_effects'];
 $sort_prices = isset($_POST['sort_prices']) && $_POST['sort_prices'];
 
-$builder = new RegencyBuilder();
+// Create and setup new PairBuilder
+$builder = new PairBuilder();
 $builder->setEffect($effect1)
 		->setEffect($effect2)
 		->setEffect($effect3)
@@ -63,86 +64,80 @@ $builder->setEffect($effect1)
 		->setExact($exact_effects)
 		->setPriceSort($sort_prices);
 
-if (isset($_POST['submit']))
-{
-	foreach (RegencyCollection::getAllRegencies() as $regency)
-	{
-		$regency->setPrice(intval($_POST['price' . $regency->getId()]));
-	}
-}
-
-file_put_contents('price_data.txt', RegencyCollection::getPrices(), FILE_TEXT);
-
 ?><!DOCTYPE html>
 <html>
 <head>
 	<title>Alathair Alchemie</title>
-	<style>
-		table, th, td { border: 1px solid black; }
+	<style type="text/css">
+		table, th, td {
+			border: 1px solid black;
+		}
+
+		#effects {
+			float: left;
+		}
+
+		#price_link {
+			float: right;
+		}
 	</style>
 </head>
 <body>
 	<form action="index.php" method="post">
-		<select name="effect1"><?= getEffectsAsOptions($effect1); ?></select>
-		<select name="effect2"><?= getEffectsAsOptions($effect2); ?></select>
-		<select name="effect3"><?= getEffectsAsOptions($effect3); ?></select>
-		<select name="effect4"><?= getEffectsAsOptions($effect4); ?></select>
+		<div id="effects">
+			<select id="effect1" name="effect1" title="Effekt 1"><?= getEffectsAsOptions($effect1); ?></select>&nbsp;
+			<select id="effect2" name="effect2" title="Effekt 2"><?= getEffectsAsOptions($effect2); ?></select>&nbsp;
+			<select id="effect3" name="effect3" title="Effekt 3"><?= getEffectsAsOptions($effect3); ?></select>&nbsp;
+			<select id="effect4" name="effect4" title="Effekt 4"><?= getEffectsAsOptions($effect4); ?></select>&nbsp;
+		</div>
+		<div id="price_link"><a href="./manage_prices.php">Preise verwalten</a></div>
 		<br /><br />
-		<input type="checkbox" name="filter_negative" value="1" <?php if ($filter_negative) echo 'checked="checked" '; ?>/> Negative filtern?<br />
-		<input type="checkbox" name="exact_effects" value="1" <?php if ($exact_effects) echo 'checked="checked" '; ?>/> Exakt diese Wirkungen?<br />
-		<input type="checkbox" name="sort_prices" value="1" <?php if ($sort_prices) echo 'checked="checked" '; ?>/> Nach Preisen sortieren?<br />
+		<input type="checkbox" id="filter_negative" name="filter_negative" value="1" <?php if ($filter_negative) echo 'checked="checked" '; ?>/>
+		<label for="filter_negative">Negative filtern?</label><br />
+		<input type="checkbox" id="exact_effects" name="exact_effects" value="1" <?php if ($exact_effects) echo 'checked="checked" '; ?>/>
+		<label for="exact_effects">Exakt diese Wirkungen?</label><br />
+		<input type="checkbox" id="sort_prices" name="sort_prices" value="1" <?php if ($sort_prices) echo 'checked="checked" '; ?>/>
+		<label for="sort_prices">Nach Preisen sortieren?</label><br />
 		<br />
 		<input type="submit" value="Mix it!" name="submit" /><?php
 
 if (isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 || $effect4 > -1))
 {
 	?>
-		<table>
-			<tr>
-				<th>Reagenzien</th>
-				<th>Wirkungen</th>
-				<th>Preis</th>
-			</tr><?php
 
-	$regency_pairs = $builder->getResult();
-	foreach ($regency_pairs as $regency_pair)
-	{
-		if ($regency_pair === null)
+	<table>
+		<tr>
+			<th>Reagenzien</th>
+			<th>Wirkungen</th>
+			<th>Preis</th>
+		</tr><?php
+
+		$regencyPairs = $builder->getResult();
+		/** @var PairResult $regencyPair */
+		foreach ($regencyPairs as $regencyPair)
 		{
-			echo '<tr></tr>' . PHP_EOL;
-			continue;
+			if ($regencyPair === null)
+			{
+				continue;
+			}
+
+			?>
+
+			<tr>
+			<td><?= implode(', ', $regencyPair->getRegencyNames()); ?></td>
+			<td><?= implode(', ', $regencyPair->getEffectNames()); ?></td>
+			<td><?= $regencyPair->getPriceText(); ?></td>
+			</tr><?php
 		}
+
 		?>
-
-			<tr>
-				<td><?= implode(', ', $regency_pair->getRegencyNames()); ?></td>
-				<td><?= implode(', ', $regency_pair->getEffectNames()); ?></td>
-				<td><?= $regency_pair->getPriceText(); ?></td>
-			</tr><?php
-	}
-
-?>
-		</table><?php
+	</table>
+	<?php
 }
-?>
-		<br /><br /><hr /><br />
-		<table>
-			<tr>
-				<th>Reagenz</th>
-				<th>Preis</th>
-			</tr><?php
-		foreach (RegencyCollection::getAllRegencies() as $regency)
-		{
-			?>
-
-			<tr>
-				<td><?= $regency->getName(); ?></td>
-				<td><input name="price<?= $regency->getId(); ?>" type="number" value="<?= intval($regency->getPrice()); ?>" style="width: 100px;"></td>
-			</tr><?php
-		}
-			?>
-		</table>
-		<input type="submit" value="Preise speichern" name="submit" />
+		?>
 	</form>
+	<br />
+	<hr />
+	<div>Benötigte Zeit für Seitenaufbau: <?= (microtime(true) - $startime) . ' Sekunden'; ?></div>
 </body>
 </html>

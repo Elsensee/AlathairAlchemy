@@ -20,24 +20,42 @@
  * THE SOFTWARE.
  */
 
+/**
+ * Regency class
+ *
+ * Represents one regency
+ */
 class Regency
 {
 	/** @var EffectCollection */
 	static protected $collection;
 
+	/** @var array */
 	protected $effects;
 
+	/** @var int */
 	protected $id;
 
+	/** @var string */
 	protected $name;
 
+	/** @var int */
 	protected $price;
 
-	public function __construct($name, array $effects, $price = null)
+	/**
+	 * Regency constructor.
+	 *
+	 * @param string	$name		Name of the regency
+	 * @param array		$effects	Array of effect names
+	 * @param int		$price		Price of the regency
+	 *
+	 * @throws RuntimeException
+	 */
+	public function __construct($name, array $effects, $price = 0)
 	{
 		if (self::$collection === null)
 		{
-			throw new Exception();
+			throw new RuntimeException('No EffectCollection has been set.');
 		}
 		$this->name = $name;
 		$this->price = $price;
@@ -46,47 +64,91 @@ class Regency
 
 		foreach ($effects as $effect)
 		{
-			$this->effects[] = self::$collection->getEffect($effect);
+			$effect = self::$collection->getEffect($effect);
+			$this->effects[$effect->getId()] = $effect;
 		}
 	}
 
+	/**
+	 * Returns a string representing the instance of Regency class
+	 *
+	 * Mostly used for array_unique()
+	 *
+	 * @return string
+	 */
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->name;
 	}
 
-	static public function setEffectCollection(EffectCollection $collection)
-	{
-		self::$collection = $collection;
-	}
-
+	/**
+	 * Returns the name of the regency
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * Returns an array of effect instances of this regency
+	 *
+	 * @return array
+	 */
 	public function getEffects()
 	{
 		return $this->effects;
 	}
 
+	/**
+	 * Returns the price of the regency
+	 *
+	 * @return int
+	 */
 	public function getPrice()
 	{
 		return $this->price;
 	}
 
+	/**
+	 * Sets the price of the regency
+	 *
+	 * @param int $price
+	 */
 	public function setPrice($price)
 	{
-		$this->price = $price;
+		$this->price = intval($price);
 	}
 
+	/**
+	 * Sets the ID of the Regency in the RegencyCollection
+	 *
+	 * @param int	$id
+	 */
 	public function setId($id)
 	{
 		$this->id = $id;
 	}
 
+	/**
+	 * Gets the ID of the Regency in the RegencyCollection
+	 *
+	 * @return int
+	 */
 	public function getId()
 	{
 		return $this->id;
+	}
+
+	/**
+	 * Sets the Effect Collection statically for the Regency class.
+	 * (Used to determine which Effect instances have to be choosed)
+	 *
+	 * @param EffectCollection $collection
+	 */
+	static public function setEffectCollection(EffectCollection $collection)
+	{
+		self::$collection = $collection;
 	}
 }

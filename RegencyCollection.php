@@ -22,24 +22,60 @@
 
 class RegencyCollection
 {
+	/** @var array */
+	static protected $cache = [];
+
+	/** @var array */
 	static protected $effectCache = [];
 
+	/** @var array */
 	static protected $regencies = [];
 
+	/**
+	 * Adds a regency to the collection
+	 *
+	 * @param Regency $regency
+	 */
 	static public function addRegency(Regency $regency)
 	{
+		// Determine the ID of the Regency in the collection. (Useful later)
 		$id = count(self::$regencies);
 		$regency->setId($id);
 		self::$regencies[] = $regency;
 	}
 
+	/**
+	 * Gets an array of all regencies
+	 *
+	 * @return array
+	 */
 	static public function getAllRegencies()
 	{
 		return self::$regencies;
 	}
 
+	/**
+	 * Gets the regency by its name
+	 *
+	 * @param string $name
+	 *
+	 * @return null|Regency
+	 */
 	static public function getRegency($name)
 	{
+		// Builds the cache if it's not yet built
+		if (empty(self::$cache))
+		{
+			self::buildCache();
+		}
+
+		// Use the cache if it's in it.
+		if (isset(self::$cache[$name]))
+		{
+			return self::$regencies[self::$cache[$name]];
+		}
+
+		// Otherwise fall back to searching for the effect in the array. (Slow)
 		/** @var Regency $regency */
 		foreach (self::$regencies as $regency)
 		{
@@ -52,26 +88,50 @@ class RegencyCollection
 		return null;
 	}
 
+	/**
+	 * Builds the cache (Regency_name => Regency_id)
+	 */
+	static protected function buildCache()
+	{
+		/** @var Regency $regency */
+		foreach (self::$regencies as $regency)
+		{
+			self::$cache[$regency->getName()] = $regency->getId();
+		}
+	}
+
+	/**
+	 * Builds the cache on the effects (Effect_id => array of regency instances)
+	 */
 	static protected function buildEffectCache()
 	{
 		/** @var Regency $regency */
 		foreach (self::$regencies as $regency)
 		{
 			/** @var Effect $effect */
-			foreach ($regency->getEffects() as $effect)
+			foreach ($regency->getEffects() as $id => $effect)
 			{
-				if (!isset(self::$effectCache[$effect->getId()]))
+				if (!isset(self::$effectCache[$id]))
 				{
-					self::$effectCache[$effect->getId()] = [];
+					self::$effectCache[$id] = [];
 				}
 
-				self::$effectCache[$effect->getId()][] = $regency;
+				self::$effectCache[$id][$regency->getId()] = $regency;
 			}
 		}
 	}
 
+	/**
+	 * Get an array with all regencies with a specific Effect
+	 * Returns null if no regencies were found
+	 *
+	 * @param Effect $effect
+	 *
+	 * @return array|null
+	 */
 	static public function getRegenciesWithEffect(Effect $effect)
 	{
+		// Build the cache
 		if (empty(self::$effectCache))
 		{
 			self::buildEffectCache();
@@ -85,6 +145,11 @@ class RegencyCollection
 		return null;
 	}
 
+	/**
+	 * Sets all prices from a config file text.
+	 *
+	 * @param $text
+	 */
 	static public function setPrices($text)
 	{
 		if (empty($text))
@@ -101,9 +166,9 @@ class RegencyCollection
 
 		$cache = [];
 		/** @var Regency $regency */
-		foreach (self::$regencies as $regency)
+		foreach (self::$regencies as $id => $regency)
 		{
-			$cache[$regency->getName()] = $regency->getId();
+			$cache[$regency->getName()] = $id;
 		}
 
 		foreach ($priceArray as $name => $price)
@@ -115,6 +180,11 @@ class RegencyCollection
 		}
 	}
 
+	/**
+	 * Returns a string that can be written to a text file that can be recovered.
+	 *
+	 * @return string
+	 */
 	static public function getPrices()
 	{
 		$priceArray = [];
@@ -122,7 +192,7 @@ class RegencyCollection
 		/** @var Regency $regency */
 		foreach (self::$regencies as $regency)
 		{
-			$priceArray[$regency->getName()] = intval($regency->getPrice());
+			$priceArray[$regency->getName()] = $regency->getPrice();
 		}
 
 		return serialize($priceArray);

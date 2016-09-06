@@ -22,20 +22,46 @@
 
 class EffectCollection
 {
+	/** @var array */
 	static protected $cache = [];
 
+	/** @var array */
 	static protected $effects = [];
 
+	/**
+	 * Adds an effect to the collection
+	 *
+	 * @param Effect $effect
+	 */
 	static public function addEffect(Effect $effect)
 	{
+		// Determine the ID of the Effect in the collection. (Useful later)
 		$id = count(self::$effects);
 		$effect->setId($id);
 		self::$effects[] = $effect;
 	}
 
+	/**
+	 * Gets an array of all effects
+	 *
+	 * @return array
+	 */
+	static public function getAllEffects()
+	{
+		return self::$effects;
+	}
+
+	/**
+	 * Gets an Effect by its ID.
+	 * Returns null if no effect was found
+	 *
+	 * @param int|null $id
+	 *
+	 * @return Effect|null
+	 */
 	static public function getEffectById($id)
 	{
-		if (is_null($id))
+		if ($id === null)
 		{
 			return null;
 		}
@@ -48,23 +74,28 @@ class EffectCollection
 		return null;
 	}
 
-	static public function getAllEffects()
-	{
-		return self::$effects;
-	}
-
+	/**
+	 * Gets an Effect by its name
+	 *
+	 * @param string $name	The name of the effect
+	 *
+	 * @return Effect
+	 */
 	static public function getEffect($name)
 	{
+		// Builds the cache if it's not yet built
 		if (empty(self::$cache))
 		{
 			self::buildCache();
 		}
 
+		// Use the cache if it's in it.
 		if (isset(self::$cache[$name]))
 		{
 			return self::$effects[self::$cache[$name]];
 		}
 
+		// Otherwise fall back to searching for the effect in the array. (Slow)
 		/** @var Effect $effect */
 		foreach (self::$effects as $effect)
 		{
@@ -78,6 +109,9 @@ class EffectCollection
 		throw new RuntimeException('Effect with name "' . $name . '" could not be found!');
 	}
 
+	/**
+	 * Builds the cache. (Effect_name => Effect_id)
+	 */
 	static protected function buildCache()
 	{
 		/** @var Effect $effect */

@@ -20,59 +20,114 @@
  * THE SOFTWARE.
  */
 
+/**
+ * PairResult class
+ *
+ * Contains a pair result
+ */
 class PairResult
 {
 	protected $effects;
 
+	protected $effectNames;
+
+	protected $prices;
+
 	protected $regencies;
 
+	/**
+	 * PairResult constructor.
+	 *
+	 * @param array $regencies
+	 * @param array $effects
+	 */
 	public function __construct(array $regencies, array $effects)
 	{
 		$this->regencies = $regencies;
 		$this->effects = $effects;
 	}
 
+	/**
+	 * Returns an array with all effect names
+	 *
+	 * @return array
+	 */
 	public function getEffectNames()
 	{
-		$result = [];
+		if (!empty($this->effectNames))
+		{
+			return $this->effectNames;
+		}
+
+		$this->effectNames = [];
 
 		foreach ($this->effects as $effect)
 		{
-			$result[] = $effect->getName();
+			$this->effectNames[] = $effect->getName();
 		}
 
-		return $result;
+		return $this->effectNames;
 	}
 
+	/**
+	 * Returns an array with all effects
+	 *
+	 * @return array
+	 */
 	public function getEffects()
 	{
 		return $this->effects;
 	}
 
+	/**
+	 * Gets the price
+	 *
+	 * @return int
+	 */
 	public function getPrice()
 	{
-		$price = 0;
-
-		foreach ($this->regencies as $regency)
+		if (empty($this->prices))
 		{
-			$price += $regency->getPrice();
+			$this->buildPriceArray();
 		}
 
-		return $price;
+		return array_sum($this->prices);
 	}
 
+	/**
+	 * Gets the price as sum text
+	 *
+	 * @return string
+	 */
 	public function getPriceText()
 	{
-		$prices = [];
-
-		foreach ($this->regencies as $regency)
+		if (empty($this->prices))
 		{
-			$prices[] = $regency->getPrice();
+			$this->buildPriceArray();
 		}
 
-		return implode('+', $prices) . '=' . array_sum($prices);
+		return implode('+', $this->prices) . '=' . array_sum($this->prices);
 	}
 
+	/**
+	 * Builds the price array
+	 */
+	protected function buildPriceArray()
+	{
+		$this->prices = [];
+
+		/** @var Regency $regency */
+		foreach ($this->regencies as $regency)
+		{
+			$this->prices[] = intval($regency->getPrice());
+		}
+	}
+
+	/**
+	 * Gets an array with all regency names
+	 *
+	 * @return array
+	 */
 	public function getRegencyNames()
 	{
 		$result = [];
@@ -85,8 +140,33 @@ class PairResult
 		return $result;
 	}
 
+	/**
+	 * Gets an array of all regencies
+	 *
+	 * @return array
+	 */
 	public function getRegencies()
 	{
 		return $this->regencies;
+	}
+
+	/**
+	 * Defines a function for usort() for this class.
+	 *
+	 * @param PairResult $a
+	 * @param PairResult $b
+	 *
+	 * @return int
+	 */
+	static public function priceSort(PairResult $a, PairResult $b)
+	{
+		$priceA = $a->getPrice();
+		$priceB = $b->getPrice();
+
+		if ($priceA === $priceB)
+		{
+			return strcasecmp(implode(', ', $a->getRegencyNames()), implode(', ', $b->getRegencyNames()));
+		}
+		return ($priceA < $priceB) ? -1 : 1;
 	}
 }

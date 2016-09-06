@@ -20,40 +20,81 @@
  * THE SOFTWARE.
  */
 
+/**
+ * Effect class
+ *
+ * Represents one effect
+ */
 class Effect
 {
+	/** @var int */
 	protected $id;
 
+	/** @var bool */
 	protected $isPositive;
 
+	/** @var string */
 	protected $name;
 
+	/**
+	 * Effect constructor.
+	 *
+	 * @param string	$name		Name of the effect
+	 * @param bool		$isPositive	Defines whether effect is positive or negative
+	 */
 	public function __construct($name, $isPositive)
 	{
 		$this->name = $name;
 		$this->isPositive = $isPositive;
 	}
 
+	/**
+	 * Returns a string representing the instance of Effect class
+	 *
+	 * Mostly used for array_unique()
+	 *
+	 * @return string
+	 */
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->name;
 	}
 
+	/**
+	 * Returns the name of the effect
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * Returns whether the effect is positive or negative
+	 *
+	 * @return bool
+	 */
 	public function isPositive()
 	{
 		return $this->isPositive;
 	}
 
+	/**
+	 * Sets the ID of the Effect in the EffectCollection
+	 *
+	 * @param int	$id
+	 */
 	public function setId($id)
 	{
 		$this->id = $id;
 	}
 
+	/**
+	 * Gets the ID of the Effect in the EffectCollection
+	 *
+	 * @return int
+	 */
 	public function getId()
 	{
 		return $this->id;
