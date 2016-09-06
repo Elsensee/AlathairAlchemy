@@ -101,4 +101,3 @@ $regencies::addRegency(new Regency('Weicheisen', ['Feuerresistenz erhöhen', 'S�
 $regencies::addRegency(new Regency('Wyrmherz', ['Heilung', 'Magieresistenz erhöhen', 'Unsichtbarkeit', 'Schutz']));
 $regencies::addRegency(new Regency('Zitrone', ['leichte Krankheit heilen', 'Gegengift', 'Feuerresistenz senken']));
 $regencies::addRegency(new Regency('Zwiebel', ['Krankheitsresistenz erhöhen', 'Paralyse aufheben', 'Schwäche' /*, 'Energieschaden'*/]));
-

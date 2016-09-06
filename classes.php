@@ -251,26 +251,40 @@ class RegencyCollection
 			return;
 		}
 
-		$prices = explode(',', $text);
+		$priceArray = @unserialize($text);
 
-		/** @var Regency $regency */
-		for ($i = 0, $size = count(self::$regencies); $i < $size; $i++)
+		if ($priceArray === false)
 		{
-			self::$regencies[$i]->setPrice(intval($prices[$i]));
+			return;
+		}
+
+		$cache = [];
+		/** @var Regency $regency */
+		foreach (self::$regencies as $regency)
+		{
+			$cache[$regency->getName()] = $regency->getId();
+		}
+
+		foreach ($priceArray as $name => $price)
+		{
+			if (isset($cache[$name]) && isset(self::$regencies[$cache[$name]]))
+			{
+				self::$regencies[$cache[$name]]->setPrice($price);
+			}
 		}
 	}
 
 	static public function getPrices()
 	{
-		$prices = [];
+		$priceArray = [];
 
 		/** @var Regency $regency */
 		foreach (self::$regencies as $regency)
 		{
-			$prices[] = intval($regency->getPrice());
+			$priceArray[$regency->getName()] = intval($regency->getPrice());
 		}
 
-		return implode(',', $prices);
+		return serialize($priceArray);
 	}
 }
 
@@ -290,7 +304,7 @@ class RegencyBuilder
 	{
 		if ($effectId === null)
 		{
-			throw new RuntimeException('$effect can not be null');
+			return $this;
 		}
 
 		$effectId = (int) $effectId;
