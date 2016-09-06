@@ -45,6 +45,7 @@ class PairResult
 	{
 		$this->regencies = $regencies;
 		$this->effects = $effects;
+		natcasesort($this->effects);
 	}
 
 	/**

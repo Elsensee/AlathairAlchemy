@@ -36,11 +36,30 @@ function getEffectsAsOptions($selected)
 	$result = '<option value="-1"></option>';
 
 	/** @var Effect $value */
-	foreach (EffectCollection::getAllEffects() as $key => $value) {
+	foreach (EffectCollection::getAllEffects() as $key => $value)
+	{
 		$result .= '<option value="' . $key . '"' . ($selected === $key ? ' selected' : '') . '>' . $value->getName() . '</option>';
 	}
 
 	return $result;
+}
+
+function echo_memory_usage()
+{
+	$mem_usage = memory_get_peak_usage(true);
+
+	if ($mem_usage < 1024)
+	{
+		return $mem_usage . ' Bytes';
+	}
+	else if ($mem_usage < 1048576)
+	{
+		return round($mem_usage / 1024, 2) . ' KB';
+	}
+	else
+	{
+		return round($mem_usage / 1048576, 2) . ' MB';
+	}
 }
 
 require('./data.php');
@@ -138,6 +157,6 @@ if (isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 
 	</form>
 	<br />
 	<hr />
-	<div>Benötigte Zeit für Seitenaufbau: <?= (microtime(true) - $startime) . ' Sekunden'; ?></div>
+	<p>Benötigte Ressourcen: <?= round((microtime(true) - $startime), 2) . ' Sekunden | ' . echo_memory_usage(); ?></p>
 </body>
 </html>
