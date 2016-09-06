@@ -211,7 +211,7 @@ class PairBuilder
 		{
 			for ($i = $key + 1; $i < $count; $i++)
 			{
-				if ($size <= 2)
+				if ($size === 2)
 				{
 					$result[] = [$regency, $regencies[$i]];
 				}
@@ -219,7 +219,7 @@ class PairBuilder
 				{
 					for ($j = $i + 1; $j < $count; $j++)
 					{
-						if ($size <= 3)
+						if ($size === 3)
 						{
 							$result[] = [$regency, $regencies[$i], $regencies[$j]];
 						}
@@ -227,7 +227,10 @@ class PairBuilder
 						{
 							for ($k = $j + 1; $k < $count; $k++)
 							{
-								$result[] = [$regency, $regencies[$i], $regencies[$j], $regencies[$k]];
+								if ($size === 4)
+								{
+									$result[] = [$regency, $regencies[$i], $regencies[$j], $regencies[$k]];
+								}
 							}
 						}
 					}
@@ -273,14 +276,14 @@ class PairBuilder
 					{
 						unset($mustHave[$effectId]);
 					}
-					else if ($exact && !isset($mustHaveCopy[$effectId]))
+					else if (!empty($mustHave) && $exact && !isset($mustHaveCopy[$effectId]))
 					{
 						return null;
 					}
 
 					if ($filterNegative)
 					{
-						if (!isset($mustHaveCopy[$effectId]) && !EffectCollection::getEffectById($effectId)->isPositive())
+						if (!empty($mustHaveCopy) && !isset($mustHaveCopy[$effectId]) && !EffectCollection::getEffectById($effectId)->isPositive())
 						{
 							return null;
 						}

@@ -28,6 +28,9 @@ class RegencyCollection
 	/** @var array */
 	static protected $effectCache = [];
 
+	/** @var int */
+	static protected $lastId = 0;
+
 	/** @var array */
 	static protected $regencies = [];
 
@@ -39,9 +42,10 @@ class RegencyCollection
 	static public function addRegency(Regency $regency)
 	{
 		// Determine the ID of the Regency in the collection. (Useful later)
-		$id = count(self::$regencies);
-		$regency->setId($id);
+		$regency->setId(self::$lastId);
 		self::$regencies[] = $regency;
+
+		self::$lastId++;
 	}
 
 	/**

@@ -28,6 +28,9 @@ class EffectCollection
 	/** @var array */
 	static protected $effects = [];
 
+	/** @var int */
+	static protected $lastId = 0;
+
 	/**
 	 * Adds an effect to the collection
 	 *
@@ -36,9 +39,10 @@ class EffectCollection
 	static public function addEffect(Effect $effect)
 	{
 		// Determine the ID of the Effect in the collection. (Useful later)
-		$id = count(self::$effects);
-		$effect->setId($id);
+		$effect->setId(self::$lastId);
 		self::$effects[] = $effect;
+
+		self::$lastId++;
 	}
 
 	/**

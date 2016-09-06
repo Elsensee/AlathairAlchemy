@@ -35,6 +35,8 @@ class PairResult
 
 	protected $regencies;
 
+	protected $sorted = false;
+
 	/**
 	 * PairResult constructor.
 	 *
@@ -45,7 +47,6 @@ class PairResult
 	{
 		$this->regencies = $regencies;
 		$this->effects = $effects;
-		natcasesort($this->effects);
 	}
 
 	/**
@@ -58,6 +59,11 @@ class PairResult
 		if (!empty($this->effectNames))
 		{
 			return $this->effectNames;
+		}
+		else if (!$this->sorted)
+		{
+			natcasesort($this->effects);
+			$this->sorted = true;
 		}
 
 		$this->effectNames = [];
@@ -77,6 +83,12 @@ class PairResult
 	 */
 	public function getEffects()
 	{
+		if (!$this->sorted)
+		{
+			natcasesort($this->effects);
+			$this->sorted = true;
+		}
+
 		return $this->effects;
 	}
 
@@ -120,7 +132,7 @@ class PairResult
 		/** @var Regency $regency */
 		foreach ($this->regencies as $regency)
 		{
-			$this->prices[] = intval($regency->getPrice());
+			$this->prices[] = $regency->getPrice();
 		}
 	}
 

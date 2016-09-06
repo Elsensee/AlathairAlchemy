@@ -20,7 +20,7 @@
 * THE SOFTWARE.
 */
 
-$startime = microtime(true);
+$startTime = microtime(true);
 
 error_reporting(E_ALL);
 
@@ -46,19 +46,19 @@ function getEffectsAsOptions($selected)
 
 function echo_memory_usage()
 {
-	$mem_usage = memory_get_peak_usage(true);
+	$memUsage = memory_get_peak_usage(true);
 
-	if ($mem_usage < 1024)
+	if ($memUsage < 1024)
 	{
-		return $mem_usage . ' Bytes';
+		return $memUsage . ' Bytes';
 	}
-	else if ($mem_usage < 1048576)
+	else if ($memUsage < 1048576)
 	{
-		return round($mem_usage / 1024, 2) . ' KB';
+		return round($memUsage / 1024, 2) . ' KB';
 	}
 	else
 	{
-		return round($mem_usage / 1048576, 2) . ' MB';
+		return round($memUsage / 1048576, 2) . ' MB';
 	}
 }
 
@@ -69,9 +69,9 @@ $effect1 = (int) (isset($_POST['effect1']) ? $_POST['effect1'] : -1);
 $effect2 = (int) (isset($_POST['effect2']) ? $_POST['effect2'] : -1);
 $effect3 = (int) (isset($_POST['effect3']) ? $_POST['effect3'] : -1);
 $effect4 = (int) (isset($_POST['effect4']) ? $_POST['effect4'] : -1);
-$filter_negative = isset($_POST['filter_negative']) && $_POST['filter_negative'];
-$exact_effects = isset($_POST['exact_effects']) && $_POST['exact_effects'];
-$sort_prices = isset($_POST['sort_prices']) && $_POST['sort_prices'];
+$filterNegative = isset($_POST['filter_negative']) && $_POST['filter_negative'];
+$exactEffects = isset($_POST['exact_effects']) && $_POST['exact_effects'];
+$sortPrices = isset($_POST['sort_prices']) && $_POST['sort_prices'];
 
 // Create and setup new PairBuilder
 $builder = new PairBuilder();
@@ -79,9 +79,9 @@ $builder->setEffect($effect1)
 		->setEffect($effect2)
 		->setEffect($effect3)
 		->setEffect($effect4)
-		->setFilterNegative($filter_negative)
-		->setExact($exact_effects)
-		->setPriceSort($sort_prices);
+		->setFilterNegative($filterNegative)
+		->setExact($exactEffects)
+		->setPriceSort($sortPrices);
 
 ?><!DOCTYPE html>
 <html>
@@ -111,11 +111,11 @@ $builder->setEffect($effect1)
 		</div>
 		<div id="price_link"><a href="./manage_prices.php">Preise verwalten</a></div>
 		<br /><br />
-		<input type="checkbox" id="filter_negative" name="filter_negative" value="1" <?php if ($filter_negative) echo 'checked="checked" '; ?>/>
+		<input type="checkbox" id="filter_negative" name="filter_negative" value="1" <?php if ($filterNegative) echo 'checked="checked" '; ?>/>
 		<label for="filter_negative">Negative filtern?</label><br />
-		<input type="checkbox" id="exact_effects" name="exact_effects" value="1" <?php if ($exact_effects) echo 'checked="checked" '; ?>/>
+		<input type="checkbox" id="exact_effects" name="exact_effects" value="1" <?php if ($exactEffects) echo 'checked="checked" '; ?>/>
 		<label for="exact_effects">Exakt diese Wirkungen?</label><br />
-		<input type="checkbox" id="sort_prices" name="sort_prices" value="1" <?php if ($sort_prices) echo 'checked="checked" '; ?>/>
+		<input type="checkbox" id="sort_prices" name="sort_prices" value="1" <?php if ($sortPrices) echo 'checked="checked" '; ?>/>
 		<label for="sort_prices">Nach Preisen sortieren?</label><br />
 		<br />
 		<input type="submit" value="Mix it!" name="submit" /><?php
@@ -157,6 +157,6 @@ if (isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 
 	</form>
 	<br />
 	<hr />
-	<p>Benötigte Ressourcen: <?= round((microtime(true) - $startime), 2) . ' Sekunden | ' . echo_memory_usage(); ?></p>
+	<p>Benötigte Ressourcen: <?= round((microtime(true) - $startTime), 2) . ' Sekunden | ' . echo_memory_usage(); ?></p>
 </body>
 </html>
