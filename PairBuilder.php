@@ -124,6 +124,11 @@ class PairBuilder
 	 */
 	public function getResult()
 	{
+		if (empty($this->effectsWished))
+		{
+			return null;
+		}
+
 		$regenciesFromEffects = [];
 
 		// First, get all regencies that have the desired effects
