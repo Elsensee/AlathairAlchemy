@@ -106,7 +106,7 @@ $builder->setEffect($effect1)
 			<label for="filter_negative">Negative filtern?</label><br />
 			<input type="checkbox" id="exact_effects" name="exact_effects" value="1" <?php if ($exactEffects) echo 'checked="checked" '; ?>/>
 			<label for="exact_effects">Exakt diese Wirkungen?</label><br />
-			<input type="checkbox" id="sort_prices" name="sort_prices" value="1" <?php if ($sortPrices) echo 'checked="checked" '; ?>/>
+			<input type="checkbox" id="sort_prices" name="sort_prices" value="1" <?php if ($sortPrices || strtolower($mode) === 'cheapest') echo 'checked="checked" '; ?>/>
 			<label for="sort_prices">Nach Preisen sortieren?</label><br />
 		</div>
 		<div id="mix_links">
