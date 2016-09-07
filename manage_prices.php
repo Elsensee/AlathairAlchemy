@@ -58,12 +58,9 @@ if (isset($_POST['submit']))
 ?><!DOCTYPE html>
 <html>
 <head>
-	<title>Alathair Alchemie</title>
-	<style type="text/css">
-		table, th, td {
-			border: 1px solid black;
-		}
-	</style>
+	<meta charset="utf-8">
+	<title>Alathair Alchemie - Preise verwalten</title>
+	<link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
 	<a href="index.php">Zurück</a><br />

@@ -86,20 +86,9 @@ $builder->setEffect($effect1)
 ?><!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
 	<title>Alathair Alchemie</title>
-	<style type="text/css">
-		table, th, td {
-			border: 1px solid black;
-		}
-
-		#effects {
-			float: left;
-		}
-
-		#price_link {
-			float: right;
-		}
-	</style>
+	<link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
 	<form action="index.php" method="post">

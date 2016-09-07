@@ -1,0 +1,11 @@
+table, th, td {
+    border: 1px solid black;
+}
+
+#effects {
+    float: left;
+}
+
+#price_link {
+    float: right;
+}
