@@ -69,6 +69,7 @@ $effect1 = (int) (isset($_POST['effect1']) ? $_POST['effect1'] : -1);
 $effect2 = (int) (isset($_POST['effect2']) ? $_POST['effect2'] : -1);
 $effect3 = (int) (isset($_POST['effect3']) ? $_POST['effect3'] : -1);
 $effect4 = (int) (isset($_POST['effect4']) ? $_POST['effect4'] : -1);
+$effect5 = (int) (isset($_POST['effect5']) ? $_POST['effect5'] : -1);
 $filterNegative = isset($_POST['filter_negative']) && $_POST['filter_negative'];
 $exactEffects = isset($_POST['exact_effects']) && $_POST['exact_effects'];
 $sortPrices = isset($_POST['sort_prices']) && $_POST['sort_prices'];
@@ -80,6 +81,7 @@ $builder->setEffect($effect1)
 		->setEffect($effect2)
 		->setEffect($effect3)
 		->setEffect($effect4)
+		->setEffect($effect5)
 		->setFilterNegative($filterNegative)
 		->setExact($exactEffects)
 		->setPriceSort($sortPrices);
@@ -99,6 +101,7 @@ $builder->setEffect($effect1)
 				<select id="effect2" name="effect2" title="Effekt 2"><?= getEffectsAsOptions($effect2); ?></select>&nbsp;
 				<select id="effect3" name="effect3" title="Effekt 3"><?= getEffectsAsOptions($effect3); ?></select>&nbsp;
 				<select id="effect4" name="effect4" title="Effekt 4"><?= getEffectsAsOptions($effect4); ?></select>&nbsp;
+				<select id="effect5" name="effect5" title="Effekt 5"><?= getEffectsAsOptions($effect5); ?></select>&nbsp;
 			</div>
 			<div id="price_link" class="rightside">
 				<a href="./manage.php">Preise verwalten</a><br />
