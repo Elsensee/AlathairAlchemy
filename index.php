@@ -36,13 +36,13 @@ $mode = isset($_GET['mode']) ? strtolower($_GET['mode']) : '';
 // Create and setup new PairBuilder
 $builder = new Alchemy\PairBuilder();
 $builder->setEffect($effect1)
-	->setEffect($effect2)
-	->setEffect($effect3)
-	->setEffect($effect4)
-	->setEffect($effect5)
-	->setFilterNegative($filterNegative)
-	->setExact($exactEffects)
-	->setPriceSort($sortPrices);
+		->setEffect($effect2)
+		->setEffect($effect3)
+		->setEffect($effect4)
+		->setEffect($effect5)
+		->setFilterNegative($filterNegative)
+		->setExact($exactEffects)
+		->setPriceSort($sortPrices);
 
 $templateVariables = [
 	'title'		=> 'Alathair Alchemie',
