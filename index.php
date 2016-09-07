@@ -33,7 +33,7 @@ require('./PairBuilder.php');
 
 function getEffectsAsOptions($selected)
 {
-	$result = '<option value="-1"></option>';
+	$result = '<option value="-1">&nbsp;</option>';
 
 	/** @var Effect $value */
 	foreach (EffectCollection::getAllEffects() as $key => $value)
@@ -84,7 +84,7 @@ $builder->setEffect($effect1)
 		->setPriceSort($sortPrices);
 
 ?><!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
 	<meta charset="utf-8">
 	<title>Alathair Alchemie</title>
@@ -100,12 +100,14 @@ $builder->setEffect($effect1)
 		</div>
 		<div id="price_link"><a href="./manage_prices.php">Preise verwalten</a></div>
 		<br /><br />
-		<input type="checkbox" id="filter_negative" name="filter_negative" value="1" <?php if ($filterNegative) echo 'checked="checked" '; ?>/>
-		<label for="filter_negative">Negative filtern?</label><br />
-		<input type="checkbox" id="exact_effects" name="exact_effects" value="1" <?php if ($exactEffects) echo 'checked="checked" '; ?>/>
-		<label for="exact_effects">Exakt diese Wirkungen?</label><br />
-		<input type="checkbox" id="sort_prices" name="sort_prices" value="1" <?php if ($sortPrices) echo 'checked="checked" '; ?>/>
-		<label for="sort_prices">Nach Preisen sortieren?</label><br />
+		<div id="filter_boxes">
+			<input type="checkbox" id="filter_negative" name="filter_negative" value="1" <?php if ($filterNegative) echo 'checked="checked" '; ?>/>
+			<label for="filter_negative">Negative filtern?</label><br />
+			<input type="checkbox" id="exact_effects" name="exact_effects" value="1" <?php if ($exactEffects) echo 'checked="checked" '; ?>/>
+			<label for="exact_effects">Exakt diese Wirkungen?</label><br />
+			<input type="checkbox" id="sort_prices" name="sort_prices" value="1" <?php if ($sortPrices) echo 'checked="checked" '; ?>/>
+			<label for="sort_prices">Nach Preisen sortieren?</label><br />
+		</div>
 		<br />
 		<input type="submit" value="Mix it!" name="submit" /><?php
 
@@ -131,14 +133,15 @@ if (isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 
 
 			?>
 
-			<tr>
+		<tr>
 			<td><?= implode(', ', $regencyPair->getRegencyNames()); ?></td>
 			<td><?= implode(', ', $regencyPair->getEffectNames()); ?></td>
 			<td><?= $regencyPair->getPriceText(); ?></td>
-			</tr><?php
+		</tr><?php
 		}
 
 		?>
+
 	</table>
 	<?php
 }
