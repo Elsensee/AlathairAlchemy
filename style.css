@@ -14,12 +14,16 @@ table, th, td {
     margin-bottom: 1.1em;
 }
 
-#options {
-    height: 1.2em;
+.right_margin {
+    margin-right: 10px;
 }
 
-#filter_boxes {
-    margin-right: 10px;
+.price {
+    width: 100px;
+}
+
+#options {
+    height: 1.2em;
 }
 
 #mix_links {

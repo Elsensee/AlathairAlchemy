@@ -31,7 +31,7 @@ if (!isset($_SERVER['PHP_AUTH_USER']))
 	http_response_code(401);
 	die('Zugriff verweigert!');
 }
-else if (strtolower($_SERVER['PHP_AUTH_USER']) !== strtolower($username) || $_SERVER['PHP_AUTH_PW'] !== $password)
+else if (strcasecmp($_SERVER['PHP_AUTH_USER'], $username) !== 0 || $_SERVER['PHP_AUTH_PW'] !== $password)
 {
 	http_response_code(401);
 	die('Zugriff verweigert!');
@@ -55,6 +55,11 @@ if (isset($_POST['submit']))
 
 	file_put_contents('price_data.txt', RegencyCollection::getPrices(), FILE_TEXT);
 }
+
+$regencies = RegencyCollection::getAllRegencies();
+$regencyCount = count($regencies);
+$middle = (int) ($regencyCount / 2);
+
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -65,25 +70,43 @@ if (isset($_POST['submit']))
 <body>
 	<a href="index.php">Zurück</a><br />
 	<h1>Preise verwalten</h1>
+	<input type="submit" value="Preise speichern" name="submit" class="bottom_margin" />
 	<form action="index.php" method="post">
-		<table>
-		<tr>
-			<th>Reagenz</th>
-			<th>Preis</th>
-		</tr><?php
+		<div class="bottom_margin"<?php if ($regencyCount % 2 === 0) echo ' style="margin-bottom: 2.4em;"'; ?>>
+			<table class="leftside right_margin">
+				<tr>
+					<th>Reagenz</th>
+					<th>Preis</th>
+				</tr><?php
 
-	foreach (RegencyCollection::getAllRegencies() as $regency)
+	for ($i = 0; $i < $middle; $i++)
 	{
 		?>
 
-		<tr>
-		<td><?= $regency->getName(); ?></td>
-		<td><input name="price<?= $regency->getId(); ?>" type="number" title="Preis eingeben" value="<?= $regency->getPrice(); ?>" style="width: 100px;"></td>
-		</tr><?php
+				<tr>
+					<td><?= $regencies[$i]->getName(); ?></td>
+					<td><input name="price<?= $regencies[$i]->getId(); ?>" type="number" title="Preis eingeben" value="<?= $regencies[$i]->getPrice(); ?>" class="price"></td>
+				</tr><?php
 	}
 	?>
-</table>
-<input type="submit" value="Preise speichern" name="submit" />
-</form>
+
+			</table>
+			<table><?php
+
+	for ($i = $middle; $i < $regencyCount; $i++)
+	{
+		?>
+
+				<tr>
+					<td><?= $regencies[$i]->getName(); ?></td>
+					<td><input name="price<?= $regencies[$i]->getId(); ?>" type="number" title="Preis eingeben" value="<?= $regencies[$i]->getPrice(); ?>" class="price"></td>
+				</tr><?php
+	}
+	?>
+
+			</table>
+		</div>
+	<input type="submit" value="Preise speichern" name="submit" class="bottom_margin" />
+	</form>
 </body>
 </html>

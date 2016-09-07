@@ -101,11 +101,11 @@ $builder->setEffect($effect1)
 				<select id="effect4" name="effect4" title="Effekt 4"><?= getEffectsAsOptions($effect4); ?></select>&nbsp;
 			</div>
 			<div id="price_link" class="rightside">
-				<a href="./manage_prices.php">Preise verwalten</a><br />
+				<a href="./manage.php">Preise verwalten</a><br />
 			</div>
 		</div>
 		<div id="menu" class="bottom_margin">
-			<div id="filter_boxes" class="leftside">
+			<div id="filter_boxes" class="leftside right_margin">
 				<input type="checkbox" id="filter_negative" name="filter_negative" value="1" <?php if ($filterNegative) echo 'checked="checked" '; ?>/>
 				<label for="filter_negative">Negative filtern?</label><br />
 				<input type="checkbox" id="exact_effects" name="exact_effects" value="1" <?php if ($exactEffects) echo 'checked="checked" '; ?>/>
