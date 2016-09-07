@@ -46,6 +46,7 @@ $builder->setEffect($effect1)
 
 $templateVariables = [
 	'title'		=> 'Alathair Alchemie',
+	'language'	=> 'de',
 
 	'selectedOptions'	=> [
 		1	=> $effect1,

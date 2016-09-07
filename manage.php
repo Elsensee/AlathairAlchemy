@@ -56,6 +56,7 @@ $regencyCount = (int) (count($regencies) / 2);
 
 $templateVariables = [
 	'title'		=> 'Alathair Alchemie - Preise verwalten',
+	'language'	=> 'de',
 
 	'regencies1'	=> array_slice($regencies, 0, $regencyCount),
 	'regencies2'	=> array_slice($regencies, $regencyCount),
