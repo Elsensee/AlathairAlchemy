@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+namespace Alchemy;
+
 /**
  * Regency class
  *

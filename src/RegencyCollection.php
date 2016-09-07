@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+namespace Alchemy;
+
 class RegencyCollection
 {
 	/** @var array */

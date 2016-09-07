@@ -34,7 +34,7 @@ $sortPrices = isset($_POST['sort_prices']) && $_POST['sort_prices'];
 $mode = isset($_GET['mode']) ? strtolower($_GET['mode']) : '';
 
 // Create and setup new PairBuilder
-$builder = new PairBuilder();
+$builder = new Alchemy\PairBuilder();
 $builder->setEffect($effect1)
 	->setEffect($effect2)
 	->setEffect($effect3)
@@ -54,7 +54,7 @@ $templateVariables = [
 		4	=> $effect4,
 		5	=> $effect5,
 	],
-	'effectOptions'		=> array_merge([-1 => ' '], EffectCollection::getAllEffects()),
+	'effectOptions'		=> array_merge([-1 => ' '], Alchemy\EffectCollection::getAllEffects()),
 
 	'filterNegative'	=> $filterNegative,
 	'exactEffects'		=> $exactEffects,

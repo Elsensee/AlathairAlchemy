@@ -26,15 +26,6 @@ error_reporting(E_ALL);
 
 require('./vendor/autoload.php');
 
-require('./Effect.php');
-require('./EffectCollection.php');
-require('./Regency.php');
-require('./RegencyCollection.php');
-require('./PairResult.php');
-require('./PairBuilder.php');
-
-require('./data.php');
-
 function memory_usage()
 {
 	$memUsage = memory_get_peak_usage(true);

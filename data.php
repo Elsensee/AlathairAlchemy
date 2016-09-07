@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 
+use Alchemy\Effect;
+use Alchemy\EffectCollection;
+use Alchemy\Regency;
+use Alchemy\RegencyCollection;
+
 // Effekte sind alphabetisch sortiert; true/false für positiv/negativ
 
 EffectCollection::addEffect(new Effect('Blindheit', false));

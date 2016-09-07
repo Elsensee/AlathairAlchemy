@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+use Alchemy\RegencyCollection;
+
 $username = "alathair";
 $password = "eimechla";
 
@@ -40,7 +42,7 @@ require('./common.php');
 // Save prices on submit
 if (isset($_POST['submit']))
 {
-	/** @var Regency $regency */
+	/** @var Alchemy\Regency $regency */
 	foreach (RegencyCollection::getAllRegencies() as $regency)
 	{
 		$regency->setPrice($_POST['price' . $regency->getId()]);
