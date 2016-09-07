@@ -20,8 +20,6 @@
  * THE SOFTWARE.
  */
 
-error_reporting(E_ALL);
-
 $username = "alathair";
 $password = "eimechla";
 
@@ -37,12 +35,7 @@ else if (strcasecmp($_SERVER['PHP_AUTH_USER'], $username) !== 0 || $_SERVER['PHP
 	die('Zugriff verweigert!');
 }
 
-require('./Effect.php');
-require('./EffectCollection.php');
-require('./Regency.php');
-require('./RegencyCollection.php');
-
-require('./data.php');
+require('./common.php');
 
 // Save prices on submit
 if (isset($_POST['submit']))
@@ -57,56 +50,17 @@ if (isset($_POST['submit']))
 }
 
 $regencies = RegencyCollection::getAllRegencies();
-$regencyCount = count($regencies);
-$middle = (int) ($regencyCount / 2);
+$regencyCount = (int) (count($regencies) / 2);
 
-?><!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Alathair Alchemie - Preise verwalten</title>
-	<link rel="stylesheet" href="style.css" type="text/css">
-</head>
-<body>
-	<a href="index.php">Zurück</a><br />
-	<h1>Preise verwalten</h1>
-	<input type="submit" value="Preise speichern" name="submit" class="bottom_margin" />
-	<form action="index.php" method="post">
-		<div class="bottom_margin"<?php if ($regencyCount % 2 === 0) echo ' style="margin-bottom: 2.4em;"'; ?>>
-			<table class="leftside right_margin">
-				<tr>
-					<th>Reagenz</th>
-					<th>Preis</th>
-				</tr><?php
+$templateVariables = [
+	'title'		=> 'Alathair Alchemie - Preise verwalten',
 
-	for ($i = 0; $i < $middle; $i++)
-	{
-		?>
+	'regencies1'	=> array_slice($regencies, 0, $regencyCount),
+	'regencies2'	=> array_slice($regencies, $regencyCount),
+	'regencyCount'	=> $regencyCount,
+];
 
-				<tr>
-					<td><?= $regencies[$i]->getName(); ?></td>
-					<td><input name="price<?= $regencies[$i]->getId(); ?>" type="number" title="Preis eingeben" value="<?= $regencies[$i]->getPrice(); ?>" class="price"></td>
-				</tr><?php
-	}
-	?>
+$templateVariables['memoryUsed'] = memory_usage();
+$templateVariables['timeSpent'] = round(microtime(true) - $startTime, 2);
 
-			</table>
-			<table><?php
-
-	for ($i = $middle; $i < $regencyCount; $i++)
-	{
-		?>
-
-				<tr>
-					<td><?= $regencies[$i]->getName(); ?></td>
-					<td><input name="price<?= $regencies[$i]->getId(); ?>" type="number" title="Preis eingeben" value="<?= $regencies[$i]->getPrice(); ?>" class="price"></td>
-				</tr><?php
-	}
-	?>
-
-			</table>
-		</div>
-	<input type="submit" value="Preise speichern" name="submit" class="bottom_margin" />
-	</form>
-</body>
-</html>
+echo $twig->render('manage.html.twig', $templateVariables);

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html{% if language %} lang="{{ language }}"{% endif %}>
+<head>
+	{% block head %}
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="style.css" type="text/css">
+		{% if title %}
+			<title>{{ title }}</title>
+		{% endif %}
+	{% endblock %}
+</head>
+<body>
+{% block content %}{% endblock %}
+{% block footer %}
+	<hr/>
+	<p>Benötigte Ressourcen: {{ timeSpent }} Sekunden | {{ memoryUsed }}</p>
+{% endblock %}
+</body>
+</html>

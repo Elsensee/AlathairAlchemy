@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+	<form action="index.php" method="post">
+		<div id="options" class="bottom_margin">
+			<div id="effects" class="leftside">
+			{% for selectedOption in selectedOptions %}
+			<select id="effect{{ loop.index }}" name="effect{{ loop.index }}" title="Effekt {{ loop.index }}">{% for option in effectOptions %}<option value="{{ loop.index0 - 1 }}"{% if (loop.index0 - 1) == selectedOption %} selected{% endif %}>{{ option }}</option>{% endfor %}</select>&nbsp;
+			{% endfor %}
+			</div>
+			<div id="price_link" class="rightside">
+				<a href="./manage.php">Preise verwalten</a><br/>
+			</div>
+		</div>
+		<div id="menu" class="bottom_margin">
+			<div id="filter_boxes" class="leftside right_margin">
+				<input type="checkbox" id="filter_negative" name="filter_negative" value="1"{% if filterNegative %} checked="checked"{% endif %} />
+				<label for="filter_negative">Negative filtern?</label><br/>
+				<input type="checkbox" id="exact_effects" name="exact_effects" value="1"{% if exactEffects %} checked="checked"{% endif %} />
+				<label for="exact_effects">Exakt diese Wirkungen?</label><br/>
+				<input type="checkbox" id="sort_prices" name="sort_prices" value="1"{% if sortPrices or mode == 'cheapest' %} checked="checked"{% endif %} />
+				<label for="sort_prices">Nach Preisen sortieren?</label><br/>
+			</div>
+			<div id="mix_links">
+				<a href="index.php?mode=cheapest">Günstigste Mixturen</a><br/>
+			</div>
+		</div>
+		<input type="submit" value="Mix it!" name="submit" class="bottom_margin"/>
+		{% if regencyPairs %}
+		<table class="bottom_margin">
+			<tr>
+				<th>Reagenzien</th>
+				<th>Wirkungen</th>
+				<th>Preis</th>
+			</tr>
+			{% for regencyPair in regencyPairs %}
+			{% if regencyPair %}
+			<tr>
+				<td>{{ regencyPair.regencyNames|join(', ') }}</td>
+				<td>{{ regencyPair.effectNames|join(', ') }}</td>
+				<td>{{ regencyPair.priceText }}</td>
+			</tr>
+			{% endif %}
+			{% endfor %}
+		</table>
+		{% endif %}
+	</form>
+{% endblock %}
