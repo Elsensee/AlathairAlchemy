@@ -92,21 +92,24 @@ $builder->setEffect($effect1)
 </head>
 <body>
 	<form action="index.php" method="post">
-		<div id="effects">
+		<div id="effects" class="leftside">
 			<select id="effect1" name="effect1" title="Effekt 1"><?= getEffectsAsOptions($effect1); ?></select>&nbsp;
 			<select id="effect2" name="effect2" title="Effekt 2"><?= getEffectsAsOptions($effect2); ?></select>&nbsp;
 			<select id="effect3" name="effect3" title="Effekt 3"><?= getEffectsAsOptions($effect3); ?></select>&nbsp;
 			<select id="effect4" name="effect4" title="Effekt 4"><?= getEffectsAsOptions($effect4); ?></select>&nbsp;
 		</div>
-		<div id="price_link"><a href="./manage_prices.php">Preise verwalten</a></div>
+		<div id="price_link" class="rightside"><a href="./manage_prices.php">Preise verwalten</a></div>
 		<br /><br />
-		<div id="filter_boxes">
+		<div id="filter_boxes" class="leftside">
 			<input type="checkbox" id="filter_negative" name="filter_negative" value="1" <?php if ($filterNegative) echo 'checked="checked" '; ?>/>
 			<label for="filter_negative">Negative filtern?</label><br />
 			<input type="checkbox" id="exact_effects" name="exact_effects" value="1" <?php if ($exactEffects) echo 'checked="checked" '; ?>/>
 			<label for="exact_effects">Exakt diese Wirkungen?</label><br />
 			<input type="checkbox" id="sort_prices" name="sort_prices" value="1" <?php if ($sortPrices) echo 'checked="checked" '; ?>/>
 			<label for="sort_prices">Nach Preisen sortieren?</label><br />
+		</div>
+		<div id="mix_links">
+			<a href="index.php?mode=cheapest">Günstigste Mixturen</a><br />
 		</div>
 		<br />
 		<input type="submit" value="Mix it!" name="submit" /><?php
@@ -146,6 +149,7 @@ if (isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 
 	<?php
 }
 		?>
+
 	</form>
 	<br />
 	<hr />

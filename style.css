@@ -2,10 +2,18 @@ table, th, td {
     border: 1px solid black;
 }
 
-#effects {
+.leftside {
     float: left;
 }
 
-#price_link {
+.rightside {
     float: right;
+}
+
+#filter_boxes {
+    margin-right: 10px;
+}
+
+#mix_links {
+    height: 60px;
 }
