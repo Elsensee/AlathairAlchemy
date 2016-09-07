@@ -138,6 +138,7 @@ class PairBuilder
 		}
 		sort($regenciesFromEffects, SORT_STRING);
 		$regenciesFromEffects = array_values($regenciesFromEffects);
+		$regencyCount = count($regenciesFromEffects);
 
 		$combinationsChecked = $pairs = [];
 
@@ -150,7 +151,7 @@ class PairBuilder
 		// Now combine and check them
 		for ($combineCount = 2; $combineCount <= 4 || ($countEffects === 1 && $combineCount <= 2); $combineCount++)
 		{
-			$combinations = $this->combine($regenciesFromEffects, $combineCount);
+			$combinations = $this->combine($regenciesFromEffects, $combineCount, $regencyCount);
 
 			foreach ($combinations as $combination)
 			{
@@ -241,12 +242,13 @@ class PairBuilder
 	 *
 	 * @param array $regencies
 	 * @param int $size Needs to be 2, 3 or 4.
+	 * @param int $count The size of the first array
 	 *
 	 * @return array
 	 */
-	protected function combine(array $regencies, $size)
+	protected function combine(array $regencies, $size, $count = 0)
 	{
-		$count = count($regencies);
+		$count = ($count) ? $count : count($regencies);
 
 		$result = [];
 
@@ -296,9 +298,8 @@ class PairBuilder
 	 */
 	protected function getEffectsFromRegencies(array $regencies, array $mustHave = [], $exact = false, $filterNegative = false)
 	{
-		$regencyEffectArray = [];
-		$effectPossible = [];
-		$mustHaveExist = !empty($mustHave);
+		$regencyEffectArray = $effectPossible = [];
+
 		$mustHaveCopy = $mustHave;
 
 		/** @var Regency $regency */
@@ -315,18 +316,19 @@ class PairBuilder
 				{
 					// We definitely already had one. This is the second, so it's possible, yay!
 					$effectPossible[$effectId] = true;
-					if (!empty($mustHave) && isset($mustHave[$effectId]))
+
+					if (!empty($mustHaveCopy) && isset($mustHaveCopy[$effectId]))
 					{
-						unset($mustHave[$effectId]);
+						unset($mustHaveCopy[$effectId]);
 					}
-					else if (!empty($mustHave) && $exact && !isset($mustHaveCopy[$effectId]))
+					else if (!empty($mustHave) && $exact && !isset($mustHave[$effectId]))
 					{
 						return null;
 					}
 
-					if ($filterNegative)
+					if ($filterNegative && !empty($mustHave))
 					{
-						if (!empty($mustHaveCopy) && !isset($mustHaveCopy[$effectId]) && !EffectCollection::getEffectById($effectId)->isPositive())
+						if (!isset($mustHave[$effectId]) && !EffectCollection::getEffectById($effectId)->isPositive())
 						{
 							return null;
 						}
@@ -337,7 +339,8 @@ class PairBuilder
 			}
 		}
 
-		if ($mustHaveExist && !empty($mustHave))
+		// Return null if not all prerequisites are met
+		if (!empty($mustHave) && !empty($mustHaveCopy))
 		{
 			return null;
 		}
@@ -354,6 +357,7 @@ class PairBuilder
 			}
 		}
 
+		// Return null if there is no result
 		if (empty($regencyResult) || empty($effectResult))
 		{
 			return null;
