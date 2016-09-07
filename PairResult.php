@@ -171,7 +171,7 @@ class PairResult
 	 *
 	 * @return int
 	 */
-	static public function priceSort(PairResult $a, PairResult $b)
+	static public function sort(PairResult $a, PairResult $b)
 	{
 		$priceA = $a->getPrice();
 		$priceB = $b->getPrice();
