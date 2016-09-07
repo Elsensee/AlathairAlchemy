@@ -72,6 +72,7 @@ $effect4 = (int) (isset($_POST['effect4']) ? $_POST['effect4'] : -1);
 $filterNegative = isset($_POST['filter_negative']) && $_POST['filter_negative'];
 $exactEffects = isset($_POST['exact_effects']) && $_POST['exact_effects'];
 $sortPrices = isset($_POST['sort_prices']) && $_POST['sort_prices'];
+$mode = isset($_GET['mode']) ? strtolower($_GET['mode']) : '';
 
 // Create and setup new PairBuilder
 $builder = new PairBuilder();
@@ -114,7 +115,7 @@ $builder->setEffect($effect1)
 		<br />
 		<input type="submit" value="Mix it!" name="submit" /><?php
 
-if (isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 || $effect4 > -1))
+if ((isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 || $effect4 > -1)) || !empty($mode))
 {
 	?>
 
@@ -125,7 +126,15 @@ if (isset($_POST['submit']) && ($effect1 > -1 || $effect2 > -1 || $effect3 > -1 
 			<th>Preis</th>
 		</tr><?php
 
-		$regencyPairs = $builder->getResult();
+		$regencyPairs = [];
+		if (!empty($mode))
+		{
+			$regencyPairs = $builder->getResultByMode($mode);
+		}
+		else
+		{
+			$regencyPairs = $builder->getResult();
+		}
 		/** @var PairResult $regencyPair */
 		foreach ($regencyPairs as $regencyPair)
 		{

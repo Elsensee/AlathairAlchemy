@@ -198,6 +198,44 @@ class PairBuilder
 		return $pairs;
 	}
 
+	public function getResultByMode($mode)
+	{
+		$mode = strtolower($mode);
+
+		$pairs = [];
+
+		switch ($mode)
+		{
+			case 'cheapest':
+				$combinations = $this->combine(RegencyCollection::getAllRegencies(), 2);
+
+				foreach ($combinations as $combination)
+				{
+					$combinationWithId = [];
+
+					/** @var Regency $regency */
+					foreach ($combination as $regency)
+					{
+						$combinationWithId[$regency->getId()] = $regency;
+					}
+
+					$pair = $this->getEffectsFromRegencies($combination);
+
+					if ($pair === null)
+					{
+						continue;
+					}
+
+					$pairs[] = $pair;
+				}
+
+				usort($pairs, array('PairResult', 'priceSort'));
+			break;
+		}
+
+		return $pairs;
+	}
+
 	/**
 	 * Combines regencies with eachother with length $size.
 	 *
