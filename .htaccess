@@ -1,0 +1,8 @@
+<FilesMatch "\.(txt|php|phar|lock|json)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+<FilesMatch "(index|manage)?\.php$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
