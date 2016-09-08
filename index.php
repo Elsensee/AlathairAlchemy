@@ -49,13 +49,13 @@ $templateVariables = [
 	'language'	=> 'de',
 
 	'selectedOptions'	=> [
-		1	=> $effect1,
-		2	=> $effect2,
-		3	=> $effect3,
-		4	=> $effect4,
-		5	=> $effect5,
+		$effect1,
+		$effect2,
+		$effect3,
+		$effect4,
+		$effect5,
 	],
-	'effectOptions'		=> array_merge([-1 => ' '], Alchemy\EffectCollection::getAllEffects()),
+	'effectOptions'		=> [-1 => ' '] + Alchemy\EffectCollection::getAllEffects(),
 
 	'filterNegative'	=> $filterNegative,
 	'exactEffects'		=> $exactEffects,
