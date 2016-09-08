@@ -43,15 +43,15 @@ require('./common.php');
 if (isset($_POST['submit']))
 {
 	/** @var Alchemy\Regency $regency */
-	foreach (RegencyCollection::getAllRegencies() as $regency)
+	foreach ($regencyCollection->getAllRegencies() as $regency)
 	{
 		$regency->setPrice($_POST['price' . $regency->getId()]);
 	}
 
-	file_put_contents('price_data.txt', RegencyCollection::getPrices(), FILE_TEXT);
+	file_put_contents('price_data.txt', $regencyCollection->getPrices(), FILE_TEXT);
 }
 
-$regencies = RegencyCollection::getAllRegencies();
+$regencies = $regencyCollection->getAllRegencies();
 $regencyCount = (int) (count($regencies) / 2);
 
 $templateVariables = [

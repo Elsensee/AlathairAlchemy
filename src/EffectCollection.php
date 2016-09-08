@@ -25,26 +25,26 @@ namespace Alchemy;
 class EffectCollection
 {
 	/** @var array */
-	static protected $cache = [];
+	protected $cache = [];
 
 	/** @var array */
-	static protected $effects = [];
+	protected $effects = [];
 
 	/** @var int */
-	static protected $lastId = 0;
+	protected $lastId = 0;
 
 	/**
 	 * Adds an effect to the collection
 	 *
 	 * @param Effect $effect
 	 */
-	static public function addEffect(Effect $effect)
+	public function addEffect(Effect $effect)
 	{
 		// Determine the ID of the Effect in the collection. (Useful later)
-		$effect->setId(self::$lastId);
-		self::$effects[] = $effect;
+		$effect->setId($this->lastId);
+		$this->effects[] = $effect;
 
-		self::$lastId++;
+		$this->lastId++;
 	}
 
 	/**
@@ -52,9 +52,9 @@ class EffectCollection
 	 *
 	 * @return array
 	 */
-	static public function getAllEffects()
+	public function getAllEffects()
 	{
-		return self::$effects;
+		return $this->effects;
 	}
 
 	/**
@@ -65,16 +65,16 @@ class EffectCollection
 	 *
 	 * @return Effect|null
 	 */
-	static public function getEffectById($id)
+	public function getEffectById($id)
 	{
 		if ($id === null)
 		{
 			return null;
 		}
 
-		if (isset(self::$effects[$id]))
+		if (isset($this->effects[$id]))
 		{
-			return self::$effects[$id];
+			return $this->effects[$id];
 		}
 
 		return null;
@@ -87,43 +87,43 @@ class EffectCollection
 	 *
 	 * @return Effect
 	 */
-	static public function getEffect($name)
+	public function getEffect($name)
 	{
 		// Builds the cache if it's not yet built
-		if (empty(self::$cache))
+		if (empty($this->cache))
 		{
-			self::buildCache();
+			$this->buildCache();
 		}
 
 		// Use the cache if it's in it.
-		if (isset(self::$cache[$name]))
+		if (isset($this->cache[$name]))
 		{
-			return self::$effects[self::$cache[$name]];
+			return $this->effects[$this->cache[$name]];
 		}
 
 		// Otherwise fall back to searching for the effect in the array. (Slow)
 		/** @var Effect $effect */
-		foreach (self::$effects as $effect)
+		foreach ($this->effects as $effect)
 		{
 			if ($effect->getName() === $name)
 			{
-				self::$cache[$effect->getName()] = $effect->getId();
+				$this->cache[$effect->getName()] = $effect->getId();
 				return $effect;
 			}
 		}
 
-		throw new RuntimeException('Effect with name "' . $name . '" could not be found!');
+		throw new \RuntimeException('Effect with name "' . $name . '" could not be found!');
 	}
 
 	/**
 	 * Builds the cache. (Effect_name => Effect_id)
 	 */
-	static protected function buildCache()
+	protected function buildCache()
 	{
 		/** @var Effect $effect */
-		foreach (self::$effects as $effect)
+		foreach ($this->effects as $effect)
 		{
-			self::$cache[$effect->getName()] = $effect->getId();
+			$this->cache[$effect->getName()] = $effect->getId();
 		}
 	}
 }

@@ -25,110 +25,112 @@ use Alchemy\EffectCollection;
 use Alchemy\Regency;
 use Alchemy\RegencyCollection;
 
-// Effekte sind alphabetisch sortiert; true/false für positiv/negativ
+$effectCollection = new EffectCollection();
+$regencyCollection = new RegencyCollection();
+Regency::setEffectCollection($effectCollection);
 
-EffectCollection::addEffect(new Effect('Blindheit', false));
-EffectCollection::addEffect(new Effect('Energieresistenz erhöhen', true));
-EffectCollection::addEffect(new Effect('Energieresistenz senken', false));
-//EffectCollection::addEffect(new Effect('Energieschaden', false)); // wahrscheinlich weg
-EffectCollection::addEffect(new Effect('Enthüllung', false));
-EffectCollection::addEffect(new Effect('Erfrischung', true));
-EffectCollection::addEffect(new Effect('Feder', true));
-EffectCollection::addEffect(new Effect('Feuerresistenz erhöhen', true));
-EffectCollection::addEffect(new Effect('Feuerresistenz senken', false));
-EffectCollection::addEffect(new Effect('Feuerschaden', false));
-EffectCollection::addEffect(new Effect('Gegengift', true));
-EffectCollection::addEffect(new Effect('Geschick', true));
-EffectCollection::addEffect(new Effect('Giftresistenz erhöhen', true));
-EffectCollection::addEffect(new Effect('Giftresistenz senken', false));
-EffectCollection::addEffect(new Effect('Giftschaden', false));
-EffectCollection::addEffect(new Effect('Haarausfall', false));
-EffectCollection::addEffect(new Effect('Haarwuchs', false));
-EffectCollection::addEffect(new Effect('Halluzinationen', false)); //
-EffectCollection::addEffect(new Effect('Heilung', true));
-EffectCollection::addEffect(new Effect('Hunger', false));
-EffectCollection::addEffect(new Effect('Infizieren', false));
-EffectCollection::addEffect(new Effect('Intelligenz', true));
-EffectCollection::addEffect(new Effect('Kälteschaden', false)); //
-EffectCollection::addEffect(new Effect('Krankheitsresistenz erhöhen', true));
-EffectCollection::addEffect(new Effect('Last', false));
-EffectCollection::addEffect(new Effect('Lebensenergieentzug', false));
-EffectCollection::addEffect(new Effect('leichte Krankheit heilen', true));
-EffectCollection::addEffect(new Effect('Magieresistenz erhöhen', true));
-EffectCollection::addEffect(new Effect('Magieresistenz senken', false));
-EffectCollection::addEffect(new Effect('Manawiederherstellung', true));
-EffectCollection::addEffect(new Effect('Manaentzug', false));
-EffectCollection::addEffect(new Effect('Nachtsicht', true));
-EffectCollection::addEffect(new Effect('Paralyse', false));
-EffectCollection::addEffect(new Effect('Paralyse aufheben', true));
-EffectCollection::addEffect(new Effect('Physische Resistenz erhöhen', true));
-EffectCollection::addEffect(new Effect('Physische Resistenz senken', false));
-EffectCollection::addEffect(new Effect('Sättigung', true));
-EffectCollection::addEffect(new Effect('Säureschaden', false)); //
-EffectCollection::addEffect(new Effect('Schlaf', false));
-EffectCollection::addEffect(new Effect('Schminke', true));
-EffectCollection::addEffect(new Effect('Schutz', true));
-EffectCollection::addEffect(new Effect('Schwäche', false));
-EffectCollection::addEffect(new Effect('Schwachsinn', false));
-EffectCollection::addEffect(new Effect('schwere Krankheit heilen', true));
-EffectCollection::addEffect(new Effect('Stärke', true));
-EffectCollection::addEffect(new Effect('Tollpatschigkeit', false));
-EffectCollection::addEffect(new Effect('Unsichtbarkeit', true));
-EffectCollection::addEffect(new Effect('Zauber auflösen', true));
+// Effects are sorted alphabetically; true/false if positive/negative
 
-Regency::setEffectCollection(new EffectCollection());
+$effectCollection->addEffect(new Effect('Blindheit', false));
+$effectCollection->addEffect(new Effect('Energieresistenz erhöhen', true));
+$effectCollection->addEffect(new Effect('Energieresistenz senken', false));
+//$effectCollection->addEffect(new Effect('Energieschaden', false)); // probably non-existent
+$effectCollection->addEffect(new Effect('Enthüllung', false));
+$effectCollection->addEffect(new Effect('Erfrischung', true));
+$effectCollection->addEffect(new Effect('Feder', true));
+$effectCollection->addEffect(new Effect('Feuerresistenz erhöhen', true));
+$effectCollection->addEffect(new Effect('Feuerresistenz senken', false));
+$effectCollection->addEffect(new Effect('Feuerschaden', false));
+$effectCollection->addEffect(new Effect('Gegengift', true));
+$effectCollection->addEffect(new Effect('Geschick', true));
+$effectCollection->addEffect(new Effect('Giftresistenz erhöhen', true));
+$effectCollection->addEffect(new Effect('Giftresistenz senken', false));
+$effectCollection->addEffect(new Effect('Giftschaden', false));
+$effectCollection->addEffect(new Effect('Haarausfall', false));
+$effectCollection->addEffect(new Effect('Haarwuchs', false));
+$effectCollection->addEffect(new Effect('Halluzinationen', false)); //
+$effectCollection->addEffect(new Effect('Heilung', true));
+$effectCollection->addEffect(new Effect('Hunger', false));
+$effectCollection->addEffect(new Effect('Infizieren', false));
+$effectCollection->addEffect(new Effect('Intelligenz', true));
+$effectCollection->addEffect(new Effect('Kälteschaden', false)); //
+$effectCollection->addEffect(new Effect('Krankheitsresistenz erhöhen', true));
+$effectCollection->addEffect(new Effect('Last', false));
+$effectCollection->addEffect(new Effect('Lebensenergieentzug', false));
+$effectCollection->addEffect(new Effect('leichte Krankheit heilen', true));
+$effectCollection->addEffect(new Effect('Magieresistenz erhöhen', true));
+$effectCollection->addEffect(new Effect('Magieresistenz senken', false));
+$effectCollection->addEffect(new Effect('Manawiederherstellung', true));
+$effectCollection->addEffect(new Effect('Manaentzug', false));
+$effectCollection->addEffect(new Effect('Nachtsicht', true));
+$effectCollection->addEffect(new Effect('Paralyse', false));
+$effectCollection->addEffect(new Effect('Paralyse aufheben', true));
+$effectCollection->addEffect(new Effect('Physische Resistenz erhöhen', true));
+$effectCollection->addEffect(new Effect('Physische Resistenz senken', false));
+$effectCollection->addEffect(new Effect('Sättigung', true));
+$effectCollection->addEffect(new Effect('Säureschaden', false)); //
+$effectCollection->addEffect(new Effect('Schlaf', false));
+$effectCollection->addEffect(new Effect('Schminke', true));
+$effectCollection->addEffect(new Effect('Schutz', true));
+$effectCollection->addEffect(new Effect('Schwäche', false));
+$effectCollection->addEffect(new Effect('Schwachsinn', false));
+$effectCollection->addEffect(new Effect('schwere Krankheit heilen', true));
+$effectCollection->addEffect(new Effect('Stärke', true));
+$effectCollection->addEffect(new Effect('Tollpatschigkeit', false));
+$effectCollection->addEffect(new Effect('Unsichtbarkeit', true));
+$effectCollection->addEffect(new Effect('Zauber auflösen', true));
 
-// Reagenzien sind alphabetisch sortiert; Effekte müssen genauso geschrieben werden, wie oben - Reihenfolge ist hier aber egal
-// Dritter Parameter des Kontruktors kann einen Default-Preis festlegen.
+// Regencies are alphabetically sorted; effects have to be written the same way as above - order is unimportant
+// third parameter of constructor can be a default price
 
-RegencyCollection::addRegency(new Regency('Alraune', ['Stärke', 'Intelligenz', 'Giftresistenz erhöhen', 'Blindheit']));
-RegencyCollection::addRegency(new Regency('Apfel', ['Stärke', 'Heilung', 'Haarwuchs', 'Last']));
-RegencyCollection::addRegency(new Regency('Bims', ['Feder', 'Nachtsicht', 'Feuerresistenz erhöhen', 'Energieresistenz erhöhen']));
-RegencyCollection::addRegency(new Regency('Blut', ['Stärke', 'Intelligenz', 'Tollpatschigkeit']));
-RegencyCollection::addRegency(new Regency('Blutmoos', ['Geschick', 'Krankheitsresistenz erhöhen', 'Schminke', 'Schwachsinn']));
-RegencyCollection::addRegency(new Regency('Champignon', ['Intelligenz', 'Sättigung', 'Haarwuchs', 'Hunger']));
-RegencyCollection::addRegency(new Regency('Coeliumerz', ['Nachtsicht', 'Energieresistenz erhöhen', 'Enthüllung' /*, 'Energieschaden'*/]));
-RegencyCollection::addRegency(new Regency('Dämonenknochen', ['Physische Resistenz erhöhen', 'Manawiederherstellung', 'Magieresistenz senken', 'Physische Resistenz senken']));
-RegencyCollection::addRegency(new Regency('Diamanterz', ['Physische Resistenz erhöhen', 'Unsichtbarkeit', 'Schutz', 'Lebensenergieentzug']));
-RegencyCollection::addRegency(new Regency('Drachenblut', ['Magieresistenz erhöhen', 'Zauber auflösen', 'Manawiederherstellung', 'Schlaf']));
-RegencyCollection::addRegency(new Regency('Efeu', ['Heilung', 'Unsichtbarkeit', 'Schlaf', 'Giftschaden']));
-RegencyCollection::addRegency(new Regency('Eisenerz', ['Stärke', 'Schutz', 'Tollpatschigkeit', 'Schwachsinn']));
-RegencyCollection::addRegency(new Regency('Fingerhut', ['leichte Krankheit heilen', 'Paralyse aufheben', 'Energieresistenz senken']));
-RegencyCollection::addRegency(new Regency('Fledermausflügel', ['Feder', 'Krankheitsresistenz erhöhen', 'Manaentzug', 'Blindheit']));
-RegencyCollection::addRegency(new Regency('Fliegenpilz', ['Manawiederherstellung', 'Manaentzug', 'Giftschaden', 'Lebensenergieentzug']));
-RegencyCollection::addRegency(new Regency('Ginsengwurzel', ['Heilung', 'leichte Krankheit heilen', 'Erfrischung', 'Gegengift']));
-RegencyCollection::addRegency(new Regency('Grabmoos', ['Heilung', 'Schutz', 'Halluzinationen', 'Schminke']));
-RegencyCollection::addRegency(new Regency('grüne Traube', ['Stärke', 'Heilung', 'Haarwuchs', 'Paralyse']));
-RegencyCollection::addRegency(new Regency('Henkerskappe', ['Zauber auflösen', 'Manawiederherstellung', 'Paralyse', 'Blindheit']));
-RegencyCollection::addRegency(new Regency('Kaktus', ['Feder', 'Krankheitsresistenz erhöhen', 'Sättigung', 'Haarausfall']));
-RegencyCollection::addRegency(new Regency('Knoblauch', ['Giftresistenz erhöhen', 'Krankheitsresistenz erhöhen', 'Gegengift', 'schwere Krankheit heilen']));
-RegencyCollection::addRegency(new Regency('Knochen', ['Magieresistenz erhöhen', 'Schwäche', 'Kälteschaden']));
-RegencyCollection::addRegency(new Regency('Krötenlaich', ['Paralyse aufheben', 'Tollpatschigkeit', 'Infizieren', 'Säureschaden']));
-RegencyCollection::addRegency(new Regency('Kupfererz', ['Geschick', 'Schutz', 'Schwäche', 'Schwachsinn']));
-RegencyCollection::addRegency(new Regency('Lehm', ['Physische Resistenz erhöhen', 'Sättigung', 'Blindheit', 'Säureschaden']));
-RegencyCollection::addRegency(new Regency('Limone', ['leichte Krankheit heilen', 'Gegengift', 'Säureschaden', 'Feuerresistenz senken']));
-RegencyCollection::addRegency(new Regency('Molchauge', ['Schwäche', 'Haarausfall', 'Halluzinationen', 'Physische Resistenz senken']));
-RegencyCollection::addRegency(new Regency('Nachtschatten', ['Nachtsicht', 'schwere Krankheit heilen', 'Giftschaden', 'Lebensenergieentzug']));
-RegencyCollection::addRegency(new Regency('Obsidian', ['Unsichtbarkeit', 'leichte Krankheit heilen', 'Giftschaden']));
-RegencyCollection::addRegency(new Regency('Pfirsich', ['Geschick', 'leichte Krankheit heilen', 'Paralyse aufheben', 'Erfrischung']));
-RegencyCollection::addRegency(new Regency('Pyrianerz', ['Feuerresistenz erhöhen', 'Last', 'Enthüllung', 'Feuerschaden']));
-RegencyCollection::addRegency(new Regency('Rattenfleisch', ['Schwachsinn', 'Schlaf', 'Infizieren', 'Giftresistenz senken']));
-RegencyCollection::addRegency(new Regency('roher Vogel', ['Energieresistenz erhöhen', 'Sättigung', 'Haarwuchs', 'Infizieren']));
-RegencyCollection::addRegency(new Regency('Schlangenschuppe', ['Nachtsicht', 'Hunger', 'Haarausfall', 'Infizieren']));
-RegencyCollection::addRegency(new Regency('schwarze Perle', ['Stärke', 'Zauber auflösen', 'Erfrischung', 'Blindheit']));
-RegencyCollection::addRegency(new Regency('Schwefel', ['Intelligenz', 'Schlaf', 'Manaentzug', 'Lebensenergieentzug']));
-RegencyCollection::addRegency(new Regency('Schwefelasche', ['Geschick', 'Giftschaden', 'Feuerschaden', 'Feuerresistenz senken']));
-RegencyCollection::addRegency(new Regency('Seerose', ['schwere Krankheit heilen', 'Schwachsinn', 'Schlaf', 'Haarausfall']));
-RegencyCollection::addRegency(new Regency('Spinnenseide', ['Feder', 'Nachtsicht', 'Giftresistenz erhöhen', 'Paralyse']));
-RegencyCollection::addRegency(new Regency('Torf', ['Zauber auflösen', 'Last', 'Giftresistenz senken']));
-RegencyCollection::addRegency(new Regency('totes Holz', ['Stärke', 'leichte Krankheit heilen', 'Kälteschaden', 'Halluzinationen']));
-RegencyCollection::addRegency(new Regency('Traube', ['Stärke', 'Heilung', 'Feder', 'Hunger']));
-RegencyCollection::addRegency(new Regency('Vulkanasche', ['Feuerresistenz erhöhen', 'Schwäche', 'Magieresistenz senken', 'Säureschaden']));
-RegencyCollection::addRegency(new Regency('Weicheisen', ['Feuerresistenz erhöhen', 'Sättigung', 'Last', 'Energieresistenz senken']));
-RegencyCollection::addRegency(new Regency('Wyrmherz', ['Heilung', 'Magieresistenz erhöhen', 'Unsichtbarkeit', 'Schutz']));
-RegencyCollection::addRegency(new Regency('Zitrone', ['leichte Krankheit heilen', 'Gegengift', 'Feuerresistenz senken']));
-RegencyCollection::addRegency(new Regency('Zwiebel', ['Krankheitsresistenz erhöhen', 'Paralyse aufheben', 'Schwäche' /*, 'Energieschaden'*/]));
+$regencyCollection->addRegency(new Regency('Alraune', ['Stärke', 'Intelligenz', 'Giftresistenz erhöhen', 'Blindheit']));
+$regencyCollection->addRegency(new Regency('Apfel', ['Stärke', 'Heilung', 'Haarwuchs', 'Last']));
+$regencyCollection->addRegency(new Regency('Bims', ['Feder', 'Nachtsicht', 'Feuerresistenz erhöhen', 'Energieresistenz erhöhen']));
+$regencyCollection->addRegency(new Regency('Blut', ['Stärke', 'Intelligenz', 'Tollpatschigkeit']));
+$regencyCollection->addRegency(new Regency('Blutmoos', ['Geschick', 'Krankheitsresistenz erhöhen', 'Schminke', 'Schwachsinn']));
+$regencyCollection->addRegency(new Regency('Champignon', ['Intelligenz', 'Sättigung', 'Haarwuchs', 'Hunger']));
+$regencyCollection->addRegency(new Regency('Coeliumerz', ['Nachtsicht', 'Energieresistenz erhöhen', 'Enthüllung' /*, 'Energieschaden'*/]));
+$regencyCollection->addRegency(new Regency('Dämonenknochen', ['Physische Resistenz erhöhen', 'Manawiederherstellung', 'Magieresistenz senken', 'Physische Resistenz senken']));
+$regencyCollection->addRegency(new Regency('Diamanterz', ['Physische Resistenz erhöhen', 'Unsichtbarkeit', 'Schutz', 'Lebensenergieentzug']));
+$regencyCollection->addRegency(new Regency('Drachenblut', ['Magieresistenz erhöhen', 'Zauber auflösen', 'Manawiederherstellung', 'Schlaf']));
+$regencyCollection->addRegency(new Regency('Efeu', ['Heilung', 'Unsichtbarkeit', 'Schlaf', 'Giftschaden']));
+$regencyCollection->addRegency(new Regency('Eisenerz', ['Stärke', 'Schutz', 'Tollpatschigkeit', 'Schwachsinn']));
+$regencyCollection->addRegency(new Regency('Fingerhut', ['leichte Krankheit heilen', 'Paralyse aufheben', 'Energieresistenz senken']));
+$regencyCollection->addRegency(new Regency('Fledermausflügel', ['Feder', 'Krankheitsresistenz erhöhen', 'Manaentzug', 'Blindheit']));
+$regencyCollection->addRegency(new Regency('Fliegenpilz', ['Manawiederherstellung', 'Manaentzug', 'Giftschaden', 'Lebensenergieentzug']));
+$regencyCollection->addRegency(new Regency('Ginsengwurzel', ['Heilung', 'leichte Krankheit heilen', 'Erfrischung', 'Gegengift']));
+$regencyCollection->addRegency(new Regency('Grabmoos', ['Heilung', 'Schutz', 'Halluzinationen', 'Schminke']));
+$regencyCollection->addRegency(new Regency('grüne Traube', ['Stärke', 'Heilung', 'Haarwuchs', 'Paralyse']));
+$regencyCollection->addRegency(new Regency('Henkerskappe', ['Zauber auflösen', 'Manawiederherstellung', 'Paralyse', 'Blindheit']));
+$regencyCollection->addRegency(new Regency('Kaktus', ['Feder', 'Krankheitsresistenz erhöhen', 'Sättigung', 'Haarausfall']));
+$regencyCollection->addRegency(new Regency('Knoblauch', ['Giftresistenz erhöhen', 'Krankheitsresistenz erhöhen', 'Gegengift', 'schwere Krankheit heilen']));
+$regencyCollection->addRegency(new Regency('Knochen', ['Magieresistenz erhöhen', 'Schwäche', 'Kälteschaden']));
+$regencyCollection->addRegency(new Regency('Krötenlaich', ['Paralyse aufheben', 'Tollpatschigkeit', 'Infizieren', 'Säureschaden']));
+$regencyCollection->addRegency(new Regency('Kupfererz', ['Geschick', 'Schutz', 'Schwäche', 'Schwachsinn']));
+$regencyCollection->addRegency(new Regency('Lehm', ['Physische Resistenz erhöhen', 'Sättigung', 'Blindheit', 'Säureschaden']));
+$regencyCollection->addRegency(new Regency('Limone', ['leichte Krankheit heilen', 'Gegengift', 'Säureschaden', 'Feuerresistenz senken']));
+$regencyCollection->addRegency(new Regency('Molchauge', ['Schwäche', 'Haarausfall', 'Halluzinationen', 'Physische Resistenz senken']));
+$regencyCollection->addRegency(new Regency('Nachtschatten', ['Nachtsicht', 'schwere Krankheit heilen', 'Giftschaden', 'Lebensenergieentzug']));
+$regencyCollection->addRegency(new Regency('Obsidian', ['Unsichtbarkeit', 'leichte Krankheit heilen', 'Giftschaden']));
+$regencyCollection->addRegency(new Regency('Pfirsich', ['Geschick', 'leichte Krankheit heilen', 'Paralyse aufheben', 'Erfrischung']));
+$regencyCollection->addRegency(new Regency('Pyrianerz', ['Feuerresistenz erhöhen', 'Last', 'Enthüllung', 'Feuerschaden']));
+$regencyCollection->addRegency(new Regency('Rattenfleisch', ['Schwachsinn', 'Schlaf', 'Infizieren', 'Giftresistenz senken']));
+$regencyCollection->addRegency(new Regency('roher Vogel', ['Energieresistenz erhöhen', 'Sättigung', 'Haarwuchs', 'Infizieren']));
+$regencyCollection->addRegency(new Regency('Schlangenschuppe', ['Nachtsicht', 'Hunger', 'Haarausfall', 'Infizieren']));
+$regencyCollection->addRegency(new Regency('schwarze Perle', ['Stärke', 'Zauber auflösen', 'Erfrischung', 'Blindheit']));
+$regencyCollection->addRegency(new Regency('Schwefel', ['Intelligenz', 'Schlaf', 'Manaentzug', 'Lebensenergieentzug']));
+$regencyCollection->addRegency(new Regency('Schwefelasche', ['Geschick', 'Giftschaden', 'Feuerschaden', 'Feuerresistenz senken']));
+$regencyCollection->addRegency(new Regency('Seerose', ['schwere Krankheit heilen', 'Schwachsinn', 'Schlaf', 'Haarausfall']));
+$regencyCollection->addRegency(new Regency('Spinnenseide', ['Feder', 'Nachtsicht', 'Giftresistenz erhöhen', 'Paralyse']));
+$regencyCollection->addRegency(new Regency('Torf', ['Zauber auflösen', 'Last', 'Giftresistenz senken']));
+$regencyCollection->addRegency(new Regency('totes Holz', ['Stärke', 'leichte Krankheit heilen', 'Kälteschaden', 'Halluzinationen']));
+$regencyCollection->addRegency(new Regency('Traube', ['Stärke', 'Heilung', 'Feder', 'Hunger']));
+$regencyCollection->addRegency(new Regency('Vulkanasche', ['Feuerresistenz erhöhen', 'Schwäche', 'Magieresistenz senken', 'Säureschaden']));
+$regencyCollection->addRegency(new Regency('Weicheisen', ['Feuerresistenz erhöhen', 'Sättigung', 'Last', 'Energieresistenz senken']));
+$regencyCollection->addRegency(new Regency('Wyrmherz', ['Heilung', 'Magieresistenz erhöhen', 'Unsichtbarkeit', 'Schutz']));
+$regencyCollection->addRegency(new Regency('Zitrone', ['leichte Krankheit heilen', 'Gegengift', 'Feuerresistenz senken']));
+$regencyCollection->addRegency(new Regency('Zwiebel', ['Krankheitsresistenz erhöhen', 'Paralyse aufheben', 'Schwäche' /*, 'Energieschaden'*/]));
 
 // Restore prices
 $prices = @file_get_contents('price_data.txt', FILE_TEXT);
-RegencyCollection::setPrices($prices);
+$regencyCollection->setPrices($prices);

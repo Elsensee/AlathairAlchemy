@@ -51,13 +51,13 @@ class Regency
 	 * @param array		$effects	Array of effect names
 	 * @param int		$price		Price of the regency
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function __construct($name, array $effects, $price = 0)
 	{
 		if (self::$collection === null)
 		{
-			throw new RuntimeException('No EffectCollection has been set.');
+			throw new \RuntimeException('No EffectCollection has been set.');
 		}
 		$this->name = $name;
 		$this->price = $price;

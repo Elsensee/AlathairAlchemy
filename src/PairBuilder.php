@@ -27,6 +27,9 @@ namespace Alchemy;
  */
 class PairBuilder
 {
+	/** @var EffectCollection */
+	protected $effectCollection;
+
 	/** @var array */
 	protected $effectsWished = [];
 
@@ -39,8 +42,20 @@ class PairBuilder
 	/** @var bool */
 	protected $priceSort = false;
 
-	/** @var array */
-	protected $result = [];
+	/** @var RegencyCollection */
+	protected $regencyCollection;
+
+	/**
+	 * PairBuilder constructor.
+	 *
+	 * @param EffectCollection  $effectCollection
+	 * @param RegencyCollection $regencyCollection
+	 */
+	public function __construct(EffectCollection $effectCollection, RegencyCollection $regencyCollection)
+	{
+		$this->effectCollection = $effectCollection;
+		$this->regencyCollection = $regencyCollection;
+	}
 
 	/**
 	 * Set a wished effect
@@ -62,10 +77,10 @@ class PairBuilder
 			return $this;
 		}
 
-		$effect = EffectCollection::getEffectById($effectId);
+		$effect = $this->effectCollection->getEffectById($effectId);
 		if ($effect === null)
 		{
-			throw new RuntimeException('Effect with ID ' . $effectId . ' could not be found.');
+			throw new \RuntimeException('Effect with ID ' . $effectId . ' could not be found.');
 		}
 		else if (in_array($effect, $this->effectsWished))
 		{
@@ -136,7 +151,7 @@ class PairBuilder
 		// First, get all regencies that have the desired effects
 		foreach ($this->effectsWished as $effectWished)
 		{
-			$regenciesFromEffects += RegencyCollection::getRegenciesWithEffect($effectWished);
+			$regenciesFromEffects += $this->regencyCollection->getRegenciesWithEffect($effectWished);
 		}
 		sort($regenciesFromEffects, SORT_STRING);
 		$regenciesFromEffects = array_values($regenciesFromEffects);
@@ -210,7 +225,7 @@ class PairBuilder
 		switch ($mode)
 		{
 			case 'cheapest':
-				$combinations = $this->combine(RegencyCollection::getAllRegencies(), 2);
+				$combinations = $this->combine($this->regencyCollection->getAllRegencies(), 2);
 
 				foreach ($combinations as $combination)
 				{
@@ -330,7 +345,7 @@ class PairBuilder
 
 					if ($filterNegative && !empty($mustHave))
 					{
-						if (!isset($mustHave[$effectId]) && !EffectCollection::getEffectById($effectId)->isPositive())
+						if (!isset($mustHave[$effectId]) && !$this->effectCollection->getEffectById($effectId)->isPositive())
 						{
 							return null;
 						}
@@ -353,7 +368,7 @@ class PairBuilder
 		{
 			if (isset($effectPossible[$effectId]) && $effectPossible[$effectId] === true)
 			{
-				$effectResult[] = EffectCollection::getEffectById($effectId);
+				$effectResult[] = $this->effectCollection->getEffectById($effectId);
 
 				$regencyResult += $regencyArray;
 			}
