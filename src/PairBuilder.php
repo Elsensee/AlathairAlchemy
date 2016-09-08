@@ -195,7 +195,7 @@ class PairBuilder
 
 		if ($this->priceSort)
 		{
-			usort($pairs, array('PairResult', 'sort'));
+			usort($pairs, array('Alchemy\PairResult', 'sort'));
 		}
 
 		return $pairs;
@@ -232,7 +232,7 @@ class PairBuilder
 					$pairs[] = $pair;
 				}
 
-				usort($pairs, array('PairResult', 'sort'));
+				usort($pairs, array('Alchemy\PairResult', 'sort'));
 			break;
 		}
 
