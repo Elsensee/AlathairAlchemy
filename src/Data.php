@@ -71,6 +71,36 @@ class Data
 	}
 
 	/**
+	 * Saves the current data object to an ini file
+	 * Returns whatever file_put_contents() returns
+	 *
+	 * @param string $file
+	 *
+	 * @return int
+	 */
+	public function saveToIniFile($file)
+	{
+		$iniResult = "[Effects]\n";
+
+		/** @var Effect $effect */
+		foreach ($this->getEffects()->getAllEffects() as $effect)
+		{
+			$iniResult .= str_replace(' ', '_', $effect->getName()) . '=' . (int) $effect->isPositive() . "\n";
+		}
+
+		$iniResult .= "\n[Regencies]\n";
+
+		/** @var Regency $regency */
+		foreach ($this->getRegencies()->getAllRegencies() as $regency)
+		{
+			$iniResult .= str_replace(' ', '_', $regency->getName()) . '[effects]=' . implode(',', $regency->getEffects()) . "\n";
+			$iniResult .= str_replace(' ', '_', $regency->getName()) . '[price]=' . (int) $regency->getPrice() . "\n";
+		}
+
+		return file_put_contents($file, $iniResult);
+	}
+
+	/**
 	 * Read prices from price data file.
 	 *
 	 * @param $priceFile
@@ -217,8 +247,8 @@ class Data
 	 * EFFECT_NAME=EFFECT_POSITIVE (spaces in effect names should be replaced with underscores)
 	 *
 	 * [Regencies]
-	 * REGENCY_NAME[effects]=REGENCY_EFFECTS (comma separated list, spaces in *regency* name should be replaced with an underscores)
-	 * REGENCY_NAME[price]=REGENCY_PRICE (spaces in regency name should be replaced with an underscore)
+	 * REGENCY_NAME[effects]=REGENCY_EFFECTS (comma separated list, spaces in *regency* name should be replaced with an
+	 * underscores) REGENCY_NAME[price]=REGENCY_PRICE (spaces in regency name should be replaced with an underscore)
 	 *
 	 * @param string		$file	The path to the data ini-file.
 	 * @param bool|string	$cache	The path to the cache file, false if cache should be disabled
@@ -249,6 +279,7 @@ class Data
 		}
 
 		$iniData = parse_ini_string($data, true, INI_SCANNER_TYPED);
+		unset($data);
 
 		if (empty($iniData))
 		{

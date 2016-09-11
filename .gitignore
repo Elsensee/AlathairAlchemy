@@ -1,4 +1,5 @@
 cache/*
 !cache/.htaccess
+data.ini
 price_data.txt
 vendor/*

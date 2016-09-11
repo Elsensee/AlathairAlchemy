@@ -44,8 +44,12 @@ function memory_usage()
 	}
 }
 
-$data = \Alchemy\Data::getDataFromIniFile(__DIR__ . '/_data.ini', __DIR__ . '/cache/data.php');
-$data->getPricesFromFile('price_data.txt');
+$file = file_exists(__DIR__ . '/data.ini') ? (__DIR__ . '/data.ini') : (__DIR__ . '/_data.ini');
+$data = \Alchemy\Data::getDataFromIniFile($file, __DIR__ . '/cache/data.php');
+if (!file_exists(__DIR__ . '/data.ini'))
+{
+	$data->getPricesFromFile('price_data.txt');
+}
 $regencyCollection = $data->getRegencies();
 $effectCollection = $data->getEffects();
 
