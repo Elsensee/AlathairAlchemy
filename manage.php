@@ -48,7 +48,7 @@ if (isset($_POST['submit']))
 		$regency->setPrice($_POST['price' . $regency->getId()]);
 	}
 
-	file_put_contents('price_data.txt', $regencyCollection->getPrices(), FILE_TEXT);
+	$data->savePricesToFile('price_data.txt');
 }
 
 $regencies = $regencyCollection->getAllRegencies();

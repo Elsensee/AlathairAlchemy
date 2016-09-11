@@ -1,4 +1,4 @@
-<FilesMatch "\.(txt|php|phar|lock|json)$">
+<FilesMatch "\.(ini|txt|php|phar|lock|json)$">
     Order Allow,Deny
     Deny from all
 </FilesMatch>

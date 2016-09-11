@@ -44,5 +44,12 @@ function memory_usage()
 	}
 }
 
+$data = \Alchemy\Data::getDataFromIniFile(__DIR__ . '/_data.ini', __DIR__ . '/cache/data.php');
+$data->getPricesFromFile('price_data.txt');
+$regencyCollection = $data->getRegencies();
+$effectCollection = $data->getEffects();
+
 $loader = new Twig_Loader_Filesystem('./templates');
-$twig = new Twig_Environment($loader);
+$twig = new Twig_Environment($loader, [
+	'cache'	=> __DIR__ . '/cache/twig/',
+]);

@@ -1,2 +1,4 @@
+cache
+!cache/.htaccess
 price_data.txt
 vendor

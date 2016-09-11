@@ -8,8 +8,7 @@
 	"autoload": {
 		"psr-4": {
 			"Alchemy\\": "src/"
-		},
-		"files": ["data.php"]
+		}
 	},
 	"scripts": {
 		"post-install-cmd": "Alchemy\\DevScripts::postInstall"
