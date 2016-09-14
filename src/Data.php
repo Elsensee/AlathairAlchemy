@@ -71,6 +71,34 @@ class Data
 	}
 
 	/**
+	 * Set a new EffectCollection to the Data object
+	 *
+	 * @param EffectCollection $effects
+	 *
+	 * @return $this
+	 */
+	public function setEffects(EffectCollection $effects)
+	{
+		$this->effects = $effects;
+
+		return $this;
+	}
+
+	/**
+	 * Set a new RegencyCollection to the Data object
+	 *
+	 * @param RegencyCollection $regencies
+	 *
+	 * @return $this
+	 */
+	public function setRegencies(RegencyCollection $regencies)
+	{
+		$this->regencies = $regencies;
+
+		return $this;
+	}
+
+	/**
 	 * Saves the current data object to an ini file
 	 * Returns whatever file_put_contents() returns
 	 *
@@ -82,16 +110,22 @@ class Data
 	{
 		$iniResult = "[Effects]\n";
 
+		$effects = $this->getEffects()->getAllEffects();
+		sort($effects, SORT_STRING);
+
 		/** @var Effect $effect */
-		foreach ($this->getEffects()->getAllEffects() as $effect)
+		foreach ($effects as $effect)
 		{
 			$iniResult .= str_replace(' ', '_', $effect->getName()) . '=' . (int) $effect->isPositive() . "\n";
 		}
 
 		$iniResult .= "\n[Regencies]\n";
 
+		$regencies = $this->getRegencies()->getAllRegencies();
+		sort($regencies, SORT_STRING);
+
 		/** @var Regency $regency */
-		foreach ($this->getRegencies()->getAllRegencies() as $regency)
+		foreach ($regencies as $regency)
 		{
 			$iniResult .= str_replace(' ', '_', $regency->getName()) . '[effects]=' . implode(',', $regency->getEffects()) . "\n";
 			$iniResult .= str_replace(' ', '_', $regency->getName()) . '[price]=' . (int) $regency->getPrice() . "\n";

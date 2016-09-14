@@ -45,7 +45,6 @@ $builder->setEffect($effect1)
 		->setPriceSort($sortPrices);
 
 $templateVariables = [
-	'title'		=> 'Alathair Alchemie',
 	'language'	=> 'de',
 
 	'selectedOptions'	=> [

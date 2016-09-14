@@ -6,26 +6,51 @@ input[type=number] {
     width: 100px;
 }
 
-.leftside {
-    float: left;
+input[type=text] {
+    width: 130px;
 }
 
-.rightside {
-    float: right;
+li {
+    margin-bottom: 5px;
+}
+
+ol {
+    list-style-type: none;
 }
 
 .bottom_margin {
     margin-bottom: 1.1em;
 }
 
+.left_margin {
+    margin-left: 10px;
+}
+
+.leftside {
+    float: left;
+}
+
+.popup {
+    padding: 20px;
+    background-color: #F5F5F5;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+    -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow:inset 0 1px 1px rgba(0,0,0,.05);
+}
+
 .right_margin {
     margin-right: 15px;
 }
 
-#options {
-    height: 1.2em;
+.rightside {
+    float: right;
 }
 
 #mix_links {
     height: 60px;
+}
+
+#options {
+    height: 1.2em;
 }

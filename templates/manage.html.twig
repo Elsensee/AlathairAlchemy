@@ -1,36 +1,49 @@
 {% extends "base.html.twig" %}
 
+{% block headscripts %}<script src="./jquery-3.1.0.min.js"></script>
+	<script src="./jquery.columnizer.min.js"></script>
+	<script src="./jquery.popupoverlay.js"></script>
+	<script src="./manage.js"></script>
+	<script>{% autoescape 'js' %}{% if effects %}
+
+		// Effect array
+		var effects = [{% for effect in effects %}new Alchemy.Effect('{{ effect.name }}', {% if effect.isPositive %}true{% else %}false{% endif %}){% if not loop.last %}, {% endif %}{% endfor %}];
+	{% endif %}{% if regencies %}
+
+		// Regency array
+		var regencies = [{% for regency in regencies %}new Alchemy.Regency('{{ regency.name }}', [{% for effect in regency.effects %}effects[{{ effect.id }}]{% if not loop.last %}, {% endif %}{% endfor %}], {{ regency.price }}){% if not loop.last %}, {% endif %}{% endfor %}];
+	{% endif %}{% endautoescape %}</script>
+{% endblock %}
+
 {% block content %}
 	<a href="index.php">Zurück</a><br/>
-	<h1>Preise verwalten</h1>
+	{% if title %}<h1>{{ title }}</h1>{% endif %}
+	<noscript><p style="color: red;"><strong>JavaScript sollte aktiviert sein!</strong></p></noscript>
 	<form action="manage.php" method="post">
-		<input type="submit" value="Preise speichern" name="submit" class="bottom_margin"/>
-		<div class="bottom_margin"{% if regencyCount % 2 == 0 %} style="margin-bottom: 2.4em;"{% endif %}>
-			{% if regencies1 %}
-			<table class="leftside right_margin">
-				<tr>
-					<th>Reagenz</th>
-					<th>Preis</th>
-				</tr>
-				{% for regency in regencies1 %}
-				<tr>
-					<td>{{ regency.name }}</td>
-					<td><input name="price{{ regency.id }}" type="number" title="Preis eingeben" value="{{ regency.price }}"></td>
-				</tr>
-				{% endfor %}
-			</table>
-			{% endif %}
-			{% if regencies2 %}
-			<table>
-				{% for regency in regencies2 %}
-				<tr>
-					<td>{{ regency.name }}</td>
-					<td><input name="price{{ regency.id }}" type="number" title="Preis eingeben" value="{{ regency.price }}"></td>
-				</tr>
-				{% endfor %}
+		<button type="submit" name="submit" class="bottom_margin">Reagenzien speichern</button>
+		<div id="table_div" class="bottom_margin">
+			{% if regencies %}
+			<table id="table">
+				<thead>
+					<tr>
+						<th>Reagenz</th>
+						<th>Preis</th>
+						<th>Effekte</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for key, regency in regencies %}<tr data-regency="{{ key|escape('js') }}">
+						<td><input name="regency[]" type="text" title="Namen eingeben" value="{{ regency.name }}"></td>
+						<td><input name="price[]" type="number" title="Preis eingeben" value="{{ regency.price }}"></td>
+						<td><button type="button" onclick="Alchemy.changeEffects(this);" class="effects_popup_open">anzeigen/ändern</button></td>
+					</tr>
+					{% endfor %}
+				</tbody>
 			</table>
 			{% endif %}
 		</div>
-		<input type="submit" value="Preise speichern" name="submit" class="bottom_margin"/>
+		<input id="javascript_input" type="hidden" name="javascript" value="off">
+		<button type="submit" name="submit" class="bottom_margin">Reagenzien speichern</button>
 	</form>
+	<div id="effects_popup" class="popup"></div>
 {% endblock %}

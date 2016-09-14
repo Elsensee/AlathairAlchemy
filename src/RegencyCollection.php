@@ -95,6 +95,29 @@ class RegencyCollection
 	}
 
 	/**
+	 * Gets a Regency by its ID.
+	 * Returns null if no regency was found
+	 *
+	 * @param int|null $id
+	 *
+	 * @return Regency|null
+	 */
+	public function getRegencyById($id)
+	{
+		if ($id === null)
+		{
+			return null;
+		}
+
+		if (isset($this->regencies[$id]))
+		{
+			return $this->regencies[$id];
+		}
+
+		return null;
+	}
+
+	/**
 	 * Builds the cache (Regency_name => Regency_id)
 	 */
 	protected function buildCache()

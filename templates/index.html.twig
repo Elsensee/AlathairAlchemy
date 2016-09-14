@@ -5,7 +5,7 @@
 		<div id="options" class="bottom_margin">
 			<div id="effects" class="leftside">
 			{% for selectedOption in selectedOptions %}
-			<select id="effect{{ loop.index }}" name="effect{{ loop.index }}" title="Effekt {{ loop.index }}">{% for option in effectOptions %}<option value="{{ loop.index0 - 1 }}"{% if (loop.index0 - 1) == selectedOption %} selected{% endif %}>{{ option }}</option>{% endfor %}</select>&nbsp;
+			<select id="effect{{ loop.index }}" name="effect{{ loop.index }}" title="Effekt {{ loop.index }}">{% for optionKey, option in effectOptions %}<option value="{{ optionKey }}"{% if optionKey == selectedOption %} selected{% endif %}>{{ option }}</option>{% endfor %}</select>&nbsp;
 			{% endfor %}
 			</div>
 			<div id="price_link" class="rightside">
@@ -25,7 +25,7 @@
 				<a href="index.php?mode=cheapest">Günstigste Mixturen</a><br/>
 			</div>
 		</div>
-		<input type="submit" value="Mix it!" name="submit" class="bottom_margin"/>
+		<button type="submit" name="submit" class="bottom_margin">Mix it!</button>
 		{% if regencyPairs %}
 		<table class="bottom_margin">
 			<tr>

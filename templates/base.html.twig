@@ -4,9 +4,8 @@
 	{% block head %}
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="style.css" type="text/css">
-	{% if title %}
-	<title>{{ title }}</title>
-	{% endif %}
+	<title>Alathair Alchemie{% if title %} - {{ title }}{% endif %}</title>
+	{% block headscripts %}{% endblock %}
 	{% endblock %}
 </head>
 <body>
@@ -15,5 +14,6 @@
 	<hr/>
 	<p>Benötigte Ressourcen: {{ timeSpent }} Sekunden | {{ memoryUsed }}</p>
 {% endblock %}
+{% block bodyscripts %}{% endblock %}
 </body>
 </html>
