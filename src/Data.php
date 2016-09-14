@@ -111,7 +111,7 @@ class Data
 		$iniResult = "[Effects]\n";
 
 		$effects = $this->getEffects()->getAllEffects();
-		sort($effects, SORT_STRING);
+		natcasesort($effects);
 
 		/** @var Effect $effect */
 		foreach ($effects as $effect)
@@ -122,7 +122,7 @@ class Data
 		$iniResult .= "\n[Regencies]\n";
 
 		$regencies = $this->getRegencies()->getAllRegencies();
-		sort($regencies, SORT_STRING);
+		natcasesort($regencies);
 
 		/** @var Regency $regency */
 		foreach ($regencies as $regency)
